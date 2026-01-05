@@ -3,16 +3,13 @@
 
 
 import pandas as pd
-import numpy as np
-import string
 
-def from_numpy(array: np.ndarray) -> pd.DataFrame:
-    # Ensure array is at least 2D for DataFrame construction
+def from_numpy(array):
+    # Ensure the array is 2D
     if array.ndim == 1:
         array = array.reshape(-1, 1)
 
     n_cols = array.shape[1]
-    columns = list(string.ascii_uppercase[:n_cols])
+    columns = [chr(ord('A') + i) for i in range(n_cols)]
 
     return pd.DataFrame(array, columns=columns)
-
