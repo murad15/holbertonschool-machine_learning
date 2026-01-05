@@ -4,6 +4,7 @@
 
 import pandas as pd
 
+
 def from_numpy(array):
     # Ensure the array is 2D
     if array.ndim == 1:
