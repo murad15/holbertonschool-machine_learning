@@ -6,7 +6,7 @@ import pandas as pd
 
 
 def from_numpy(array):
-    # Ensure the array is 2D
+    """ Ensure the array is 2D and perform conversion afterwards"""
     if array.ndim == 1:
         array = array.reshape(-1, 1)
 
