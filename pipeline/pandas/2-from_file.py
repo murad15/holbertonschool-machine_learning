@@ -8,5 +8,5 @@ import pandas as pd
 def from_file(filename, delimiter):
     """Function to load data from file"""
 
-    data = pd.read_csv(filename, delimeter = delimeter)
+    data = pd.read_csv(filename, delimiter = delimiter)
     return data
