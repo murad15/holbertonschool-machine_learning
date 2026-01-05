@@ -2,6 +2,7 @@
 """Something to write here and so on etc"""
 
 
+import pandas as pd
 def rename(df):
     """This function makes something interesting"""
 
