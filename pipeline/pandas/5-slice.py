@@ -6,5 +6,5 @@ def slice(df):
     """All your files should end with a new line"""
 
     df = df[["High", "Low", "Close", "Volume_BTC"]]
-    df = df.iloc[[i for i in range(0, len(df)+1, 60)
+    df = df.iloc[[i for i in range(0, len(df), 60)]
     return df
