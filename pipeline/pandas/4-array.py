@@ -1,8 +1,6 @@
 #!/usr/bin/env python3
 """Some function to do something"""
 
-import pandas as pd
-
 
 def array(df):
     """This function does something interesting"""
