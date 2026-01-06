@@ -5,5 +5,4 @@
 def flip_switch(df):
     """asdja asdjsjda sdasd asda asd"""
 
-
-    return df.sort_values(by = "Timestamp", ascending = False).T
+    return df.sort_values(by="Timestamp", ascending=False).T
