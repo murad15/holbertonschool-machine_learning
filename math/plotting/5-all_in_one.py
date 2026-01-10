@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
-"""qwe qwewqe qe qe qw eq"""
+"""plot all 5 previous graphs in one figure"""
 
 import numpy as np
 import matplotlib.pyplot as plt
 
 
 def all_in_one():
-    """qweqwe qwe qwe qwe qew qwe qe w"""
+    """plot all 5 previous graphs in one figure"""
 
     y0 = np.arange(0, 11) ** 3
 
@@ -31,25 +31,24 @@ def all_in_one():
     np.random.seed(5)
     student_grades = np.random.normal(68, 15, 50)
 
-    # Create figure and 3x2 grid
     fig = plt.figure(figsize=(10, 10))
     fig.suptitle("All in One", fontsize='x-small')
 
-    # Plot 1: y0 cubic
+    # Plot 1
     ax1 = plt.subplot2grid((3, 2), (0, 0))
     ax1.plot(y0, 'r-')
     ax1.set_title("y = x^3", fontsize='x-small')
     ax1.set_xlabel("x", fontsize='x-small')
     ax1.set_ylabel("y", fontsize='x-small')
 
-    # Plot 2: scatter x1 vs y1
+    # Plot 2
     ax2 = plt.subplot2grid((3, 2), (0, 1))
     ax2.scatter(x1, y1, c='magenta', s=10)
     ax2.set_title("Men's Height vs Weight", fontsize='x-small')
     ax2.set_xlabel("Height (in)", fontsize='x-small')
     ax2.set_ylabel("Weight (lbs)", fontsize='x-small')
 
-    # Plot 3: radioactive decay
+    # Plot 3
     ax3 = plt.subplot2grid((3, 2), (1, 0))
     ax3.plot(x2, y2)
     ax3.set_title("Exponential Decay of C-14", fontsize='x-small')
@@ -57,7 +56,7 @@ def all_in_one():
     ax3.set_ylabel("Fraction Remaining", fontsize='x-small')
     ax3.set_yscale('log')
 
-    # Plot 4: half-life comparison
+    # Plot 4
     ax4 = plt.subplot2grid((3, 2), (1, 1))
     ax4.plot(x3, y31, 'r--', label='C-14')
     ax4.plot(x3, y32, 'g', label='Ra-226')
@@ -66,15 +65,12 @@ def all_in_one():
     ax4.set_ylabel("Fraction Remaining", fontsize='x-small')
     ax4.legend(fontsize='x-small')
 
-    # Plot 5: histogram
+    # Plot 5
     ax5 = plt.subplot2grid((3, 2), (2, 0), colspan=2)
     ax5.hist(student_grades, bins=10, edgecolor='black')
     ax5.set_title("Project A", fontsize='x-small')
     ax5.set_xlabel("Grades", fontsize='x-small')
     ax5.set_ylabel("Number of Students", fontsize='x-small')
 
-    plt.tight_layout(rect=[0, 0.03, 1, 0.95])
     plt.show()
 
-if __name__ == "__main__":
-    all_in_one()
