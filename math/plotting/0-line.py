@@ -1,10 +1,16 @@
 #!/usr/bin/env python3
 import numpy as np
-import matplotlib.pyplot as plt
+import matplotlib.pyplot as  plt
+
 
 def line():
+
 
     y = np.arange(0, 11) ** 3
     plt.figure(figsize=(6.4, 4.8))
 
-    return plt.plot(y, [i for i in range(0,11)], "r")
+    x = np.arange(0, 11)
+    plt.plot(x, y, 'r-')
+    plt.xlim(0, 10)
+    plt.show()
+
