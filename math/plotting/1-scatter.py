@@ -4,6 +4,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
+
 def scatter():
     """adawd awda dwqqe qweqwqe"""
 
