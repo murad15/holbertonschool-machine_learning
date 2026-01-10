@@ -27,5 +27,4 @@ def frequency():
 
     plt.xlim(0, 100)
     plt.xticks(np.arange(0, 101, 10))
-
     plt.show()
