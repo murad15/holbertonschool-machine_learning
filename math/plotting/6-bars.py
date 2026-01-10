@@ -13,12 +13,20 @@ def bars():
     fruit = np.random.randint(0, 20, (4,3))
     plt.figure(figsize=(6.4, 4.8))
 
-    # Compute bottoms for stacking
+    # Define the people (columns)
+    people = ['Farrah', 'Fred', 'Felicia']
+
+    # Fruits and their colors
+    fruits = ['Apples', 'Bananas', 'Oranges', 'Peaches']
+    colors = ['red', 'yellow', '#ff8000', '#ffe5b4']  # color per fruit
+    bar_width = 0.5
+
+    # Keep track of the bottom of each bar for stacking
     bottoms = np.zeros(fruit.shape[1])
 
     for i in range(fruit.shape[0]):
         plt.bar(people, fruit[i], bottom=bottoms, color=colors[i], width=bar_width, label=fruits[i])
-        bottoms += fruit[i]  # update bottom for next fruit
+        bottoms += fruit[i]  # stack the next fruit on top
 
     plt.ylabel("Quantity of Fruit")
     plt.ylim(0, 80)
