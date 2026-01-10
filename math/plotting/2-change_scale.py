@@ -19,3 +19,4 @@ def change_scale():
     plt.xlabel("Time (years)")
     plt.ylabel("Fraction Remaining")
     plt.xlim(0, 28650)
+    plt.show()
