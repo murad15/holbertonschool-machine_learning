@@ -1,24 +1,34 @@
 #!/usr/bin/env python3
-""" qe qwe qwe qwe wqeqweqweqe """
-
+"""
+Module that plots a histogram of student grades for Project A
+"""
 
 import numpy as np
 import matplotlib.pyplot as plt
 
 
 def frequency():
-    """qweqeqweqw wqe qwe aqwe qwewqe qwe wqe"""
+    """
+    Plots a histogram of student grades for Project A
 
+    - X-axis labeled 'Grades'
+    - Y-axis labeled 'Number of Students'
+    - Bins every 10 units
+    - Bars outlined in black
+    - Title 'Project A'
+    """
     np.random.seed(5)
     student_grades = np.random.normal(68, 15, 50)
     plt.figure(figsize=(6.4, 4.8))
 
-    bins = np.arange(0, 101, 10)
-    plt.hist(student_grades, bins=bins, edgecolor='black')
+    # Histogram with bins every 10 units and black edges
+    plt.hist(student_grades, bins=range(0, 101, 10), edgecolor='black')
 
+    # Labels and title
     plt.xlabel("Grades")
     plt.ylabel("Number of Students")
     plt.title("Project A")
     plt.xlim(0, 100)
 
+    # Display plot
     plt.show()
