@@ -22,5 +22,5 @@ def two():
     plt.ylabel("Fraction Remaining")
     plt.xlim(0, 20000)
     plt.ylim(0,1)
-    plt.legend(labels=["C-14", "Ra-226", loc="upper right")
+    plt.legend(labels=["C-14", "Ra-226"], loc="upper right")
     plt.show()
