@@ -1,36 +1,42 @@
 #!/usr/bin/env python3
-""" qweqe qwe qweqwe qwe """
-
-
+"""
+Module that plots a stacked bar graph showing the number of fruit per person
+"""
 import numpy as np
 import matplotlib.pyplot as plt
 
 
 def bars():
-    """qqweqwe qwe qe qewqwq"""
-
+    """
+    Plots a stacked bar chart of fruit quantities per person
+    """
     np.random.seed(5)
-    fruit = np.random.randint(0, 20, (4,3))
+    fruit = np.random.randint(0, 20, (4, 3))
+
+    people = ['Farrah', 'Fred', 'Felicia']
+    x = np.arange(len(people))
+    width = 0.5
+
+    apples = fruit[0]
+    bananas = fruit[1]
+    oranges = fruit[2]
+    peaches = fruit[3]
+
     plt.figure(figsize=(6.4, 4.8))
 
-    # Define the people (columns)
-    people = ['Farrah', 'Fred', 'Felicia']
+    plt.bar(x, apples, width, color='red', label='apples')
+    plt.bar(x, bananas, width, bottom=apples,
+            color='yellow', label='bananas')
+    plt.bar(x, oranges, width, bottom=apples + bananas,
+            color='#ff8000', label='oranges')
+    plt.bar(x, peaches, width, bottom=apples + bananas + oranges,
+            color='#ffe5b4', label='peaches')
 
-    # Fruits and their colors
-    fruits = ['Apples', 'Bananas', 'Oranges', 'Peaches']
-    colors = ['red', 'yellow', '#ff8000', '#ffe5b4']  # color per fruit
-    bar_width = 0.5
-
-    # Keep track of the bottom of each bar for stacking
-    bottoms = np.zeros(fruit.shape[1])
-
-    for i in range(fruit.shape[0]):
-        plt.bar(people, fruit[i], bottom=bottoms, color=colors[i], width=bar_width, label=fruits[i])
-        bottoms += fruit[i]  # stack the next fruit on top
-
-    plt.ylabel("Quantity of Fruit")
+    plt.xticks(x, people)
+    plt.ylabel('Quantity of Fruit')
     plt.ylim(0, 80)
     plt.yticks(np.arange(0, 81, 10))
-    plt.title("Number of Fruit per Person")
+    plt.title('Number of Fruit per Person')
     plt.legend()
+
     plt.show()
