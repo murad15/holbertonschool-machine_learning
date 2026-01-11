@@ -21,4 +21,3 @@ def frequency():
         bins=[i for i in range(0, 101, 10)],
         edgecolor='black'
     )
-
