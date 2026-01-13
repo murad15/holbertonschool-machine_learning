@@ -5,8 +5,6 @@
 def summation_i_squared(n):
     """This function does something interesting"""
 
-    if n>=0 and isinstance(n,int):
-        res = n*(n+1)*(2*n+1)/6
-        return res
-    else:
+    if isinstance(n, bool) or not isinstance(n, int) or n <= 0:
         return None
+    return n * (n + 1) * (2 * n + 1) // 6
