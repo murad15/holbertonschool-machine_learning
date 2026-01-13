@@ -6,7 +6,7 @@ def summation_i_squared(n):
     """This function does something interesting"""
 
 
-    if n>=0 and isinstance(n, int):
+    if n.is_integer() and isinstance(n,float):
         res = n*(n+1)*(2*n+1)/6
         return res
     else:
