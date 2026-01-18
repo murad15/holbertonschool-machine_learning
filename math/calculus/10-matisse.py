@@ -10,7 +10,7 @@ def poly_derivative(poly):
         return None
 
     for c in poly:
-        # Reject non-numeric coefficients (also rejects bool, since bool is a subclass of int)
+        # Reject non-numeric coefficie
         if isinstance(c, bool) or not isinstance(c, (int, float)):
             return None
 
