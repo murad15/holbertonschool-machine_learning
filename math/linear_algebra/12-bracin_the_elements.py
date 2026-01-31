@@ -2,8 +2,6 @@
 """Something that function does"""
 
 
-import numpy as np
-
 def np_elementwise(mat1, mat2):
     """Something that function does"""
 
