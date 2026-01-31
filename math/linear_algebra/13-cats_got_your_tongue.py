@@ -4,6 +4,7 @@
 
 import numpy as np
 
+
 def np_cat(mat1, mat2, axis=0):
     """Something that function does"""
 
