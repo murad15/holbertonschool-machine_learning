@@ -5,4 +5,5 @@
 def matrix_transpose(matrix):
     """qwe qw q e qwe qwe qwe"""
 
-    return [[matrix[row][col] for row in range(len(matrix))] for col in range(len(matrix[0]))]
+    return [[matrix[row][col] for row in range(len(matrix))]
+            for col in range(len(matrix[0]))]
