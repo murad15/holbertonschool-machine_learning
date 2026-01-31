@@ -5,7 +5,7 @@
 def mat_mul(mat1, mat2):
     """ qwe qe qe qwe qe qw e wqeqw eweq"""
 
-    #Nof columns in mat1 must equal number of rows in mat2
+    # Nof columns in mat1 must equal number of rows in mat2
     if len(mat1[0]) != len(mat2):
         return None
 
