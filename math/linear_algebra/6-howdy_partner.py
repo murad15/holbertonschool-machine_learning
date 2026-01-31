@@ -4,5 +4,5 @@
 
 def cat_arrays(arr1, arr2):
     """qwe qwe qw  er ertrt ert"""
-
-    return arr1.extend(arr2)
+    new = arr1.extend(arr2)
+    return new
