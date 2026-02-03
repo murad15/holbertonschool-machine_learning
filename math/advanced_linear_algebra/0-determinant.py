@@ -10,7 +10,7 @@ def determinant(matrix):
     if matrix == [[]]:
         return 1
     try:
-        det = np.linalg.det(matrix)
+        det = numpy.linalg.det(matrix)
         return det
     except ValueError:
         print("matrix must be a square matrix")
