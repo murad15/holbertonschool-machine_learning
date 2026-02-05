@@ -3,6 +3,8 @@
 
 
 def minor(matrix):
+    """ qwe qwe qw eq eq r qrwr qw rwqrqrq"""
+
     # Check type: must be list of lists
     if not all(isinstance(row, list) for row in matrix):
         raise TypeError("matrix must be a list of lists")
