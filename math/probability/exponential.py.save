@@ -1,0 +1,6 @@
+#!/usr/bin/env python3
+"""Something that function does"""
+
+
+class Exponential:
+    """Represents Exponential distribution"""

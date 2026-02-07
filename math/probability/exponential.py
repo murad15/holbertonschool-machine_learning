@@ -1,0 +1,37 @@
+#!/usr/bin/env python3
+"""Something that function does"""
+
+
+class Exponential:
+    """Represents an Exponential distribution"""
+
+    def __init__(self, data=None, lambtha=1.):
+        if data is None:
+            if lambtha <= 0:
+                raise ValueError("lambtha must be a positive value")
+            self.lambtha = float(lambtha)
+        else:
+            if not isinstance(data, list):
+                raise TypeError("data must be a list")
+
+            if len(data) < 2:
+                raise ValueError("data must contain multiple values")
+
+            # lambda = 1 / mean of data
+            self.lambtha = float(1 / (sum(data) / len(data)))
+
+    def pdf(self, x):
+        """Calculates the PDF for a given time period x"""
+        if x < 0:
+            return 0
+
+        e = 2.718281828459045
+        return self.lambtha * (e ** (-self.lambtha * x))
+
+    def cdf(self, x):
+        """Calculates the CDF for a given time period x"""
+        if x < 0:
+            return 0
+
+        e = 2.718281828459045
+        return 1 - (e ** (-self.lambtha * x))
