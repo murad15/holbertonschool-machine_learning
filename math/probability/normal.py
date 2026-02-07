@@ -42,5 +42,5 @@ class Normal:
         """Calculates the CDF for x"""
         z = (x - self.mean) / self.stddev
         # series approximation for the integral part
-        approx = (z - z**3 / 3 + z**5 / 10 - z**7 / 42 + z**9 / 216)
-        return 0.5 + (approx / (2 * 3.1415926536 ** 0.5))
+        approx = z - (z**3)/3 + (z**5)/10 - (z**7)/42 + (z**9)/216
+        return 0.5 + (approx / (2 * 3.141592653589793) ** 0.5)
