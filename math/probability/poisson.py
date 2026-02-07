@@ -3,7 +3,7 @@
 
 
 class Poisson:
-"""Something that function does"""
+    """Something that function does"""
 
     def __init__(self, data=None, lambtha=1.):
         if data is None:
