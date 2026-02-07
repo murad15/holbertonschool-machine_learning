@@ -23,7 +23,7 @@ def cofactor(matrix):
         size = len(mat)
 
         if size == 1:
-            return mat[0][0]
+            return [[0]]
 
         if size == 2:
             return mat[0][0] * mat[1][1] - mat[0][1] * mat[1][0]
