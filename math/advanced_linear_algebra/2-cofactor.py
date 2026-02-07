@@ -18,12 +18,15 @@ def cofactor(matrix):
     if n == 0 or not all(len(row) == n for row in matrix):
         raise ValueError("matrix must be a non-empty square matrix")
 
+    if n == 1:
+        return [[1]]
+
     # Helper: determinant
     def determinant(mat):
         size = len(mat)
 
         if size == 1:
-            return [[0]]
+            return mat[0][0]
 
         if size == 2:
             return mat[0][0] * mat[1][1] - mat[0][1] * mat[1][0]
