@@ -41,7 +41,7 @@ class Poisson:
                 factorial)
 
     def cdf(self, k):
-         """Calculetes cdf and else"""
+        """Calculetes cdf and else"""
 
         if not isinstance(k, int):
             k = int(k)
