@@ -40,17 +40,7 @@ class Normal:
 
     def cdf(self, x):
         """Calculates the CDF for x"""
-        # Abramowitz & Stegun approximation of erf
-        def erf(z):
-            t = 1.0 / (1.0 + 0.3275911 * abs(z))
-            a1 = 0.254829592
-            a2 = -0.284496736
-            a3 = 1.421413741
-            a4 = -1.453152027
-            a5 = 1.061405429
-            poly = a1*t + a2*t**2 + a3*t**3 + a4*t**4 + a5*t**5
-            approx = 1 - poly * (2.718281828459045 ** (-z*z))
-            return approx if z >= 0 else -approx
-
-        z = (x - self.mean) / (self.stddev * (2 ** 0.5))
-        return 0.5 * (1 + erf(z))
+        z = (x - self.mean) / self.stddev
+        # series approximation for the integral part
+        approx = (z - z**3 / 3 + z**5 / 10 - z**7 / 42 + z**9 / 216)
+        return 0.5 + (approx / (2 * 3.1415926536 ** 0.5))
