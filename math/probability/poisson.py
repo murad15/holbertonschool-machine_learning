@@ -25,5 +25,17 @@ class Poisson:
         if not isinstance(k, int):
             k = int(k)
 
-        pmf = 2.7182818285 ** (-self.lambtha ** k) / math.factorial(k)
-        return pmf
+        if k < 0:
+            return 0
+
+        # factorial(k)
+        factorial = 1
+        for i in range(1, k + 1):
+            factorial *= i
+
+        # e approximation (Euler's number)
+        e = 2.7182818285
+
+        return (e ** (-self.lambtha) *
+                (self.lambtha ** k) /
+                factorial)
