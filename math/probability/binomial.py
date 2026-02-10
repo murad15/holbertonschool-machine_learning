@@ -57,3 +57,23 @@ class Binomial:
         # Binomial PMF
         return combination * (self.p ** k) * ((1 - self.p) ** (self.n - k))
 
+    def cdf(self, k):
+        """
+        Calculates the Cumulative Distribution Function for k successes
+        """
+
+        # Convert k to integer if needed
+        k = int(k)
+
+        # If k is out of range
+        if k < 0:
+            return 0
+        if k > self.n:
+            k = self.n
+
+        # Sum PMF values from 0 to k
+        cumulative = 0
+        for i in range(0, k + 1):
+            cumulative += self.pmf(i)
+
+        return cumulative
