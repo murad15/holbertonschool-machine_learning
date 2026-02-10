@@ -36,7 +36,7 @@ class Binomial:
             if len(data) < 2:
                 raise ValueError("data must contain multiple values")
 
-            # Calculate p first (mean of data divided by max possible successes)
+            # Calculate p first (mean of data divided by max possible sucsses)
             mean = sum(data) / len(data)
             variance = sum((x - mean) ** 2 for x in data) / len(data)
 
