@@ -4,6 +4,7 @@
 
 import numpy as np
 
+
 def marginal(x, n, P, Pr):
     """
     Calculates the marginal probability of observing x successes out of n trials.
