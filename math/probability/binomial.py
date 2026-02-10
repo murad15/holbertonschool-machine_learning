@@ -3,60 +3,57 @@
 
 
 class Binomial:
-    """Something that function does"""
+    """qweq qwe qwe qwe qw eqw e qweqweq"""
 
     def __init__(self, data=None, n=1, p=0.5):
-        """
-        Initialize a Binomial distribution.
 
-        Parameters:
-        data (list): Optional list of observed data
-        n (int): Number of Bernoulli trials
-        p (float): Probability of success
-        """
-
-        # Case 1: data is NOT provided
         if data is None:
-            # Validate n
             if n <= 0:
                 raise ValueError("n must be a positive value")
-
-            # Validate p
             if p <= 0 or p >= 1:
                 raise ValueError("p must be greater than 0 and less than 1")
 
             self.n = int(n)
             self.p = float(p)
 
-        # Case 2: data IS provided
         else:
-            # Validate data type
             if not isinstance(data, list):
                 raise TypeError("data must be a list")
-
-            # Validate data length
             if len(data) < 2:
                 raise ValueError("data must contain multiple values")
 
-            # Calculate p first (mean of data divided by max possible sucsses)
             mean = sum(data) / len(data)
             variance = sum((x - mean) ** 2 for x in data) / len(data)
 
-            # Estimate p first
-            p_estimate = 1 - (variance / mean)
-            p_estimate = max(min(p_estimate, 0.999999), 0.000001)
+            p = 1 - variance / mean
+            n = round(mean / p)
+            p = mean / n
 
-            # Estimate n using rounded value
-            n_estimate = round(mean / p_estimate)
+            self.n = int(n)
+            self.p = float(p)
 
-            if n_estimate <= 0:
-                raise ValueError("n must be a positive value")
+    def pmf(self, k):
+        """
+        Calculates the Probability Mass Function for k successes
+        """
 
-            # Recalculate p using rounded n
-            p_estimate = mean / n_estimate
+        # Convert k to integer if needed
+        k = int(k)
 
-            if p_estimate <= 0 or p_estimate >= 1:
-                raise ValueError("p must be greater than 0 and less than 1")
+        # Return 0 if k is out of range
+        if k < 0 or k > self.n:
+            return 0
 
-            self.n = int(n_estimate)
-            self.p = float(p_estimate)
+        # Calculate combination nCk manually
+        numerator = 1
+        denominator = 1
+
+        for i in range(1, k + 1):
+            numerator *= self.n - (k - i)
+            denominator *= i
+
+        combination = numerator / denominator
+
+        # Binomial PMF
+        return combination * (self.p ** k) * ((1 - self.p) ** (self.n - k))
+
