@@ -7,7 +7,7 @@ import numpy as np
 
 def posterior(x, n, P, Pr):
     """
-    Calculates the posterior probability for each hypothetical probability in P
+    Calculates the posterior thetical probability in P
     given x successes out of n trials.
     """
 
