@@ -12,7 +12,7 @@ def create_confusion_matrix(labels, logits):
     pred_cls = np.argmax(logits, axis=1)
 
     classes = labels.shape[1]
-    confusion = np.zeros((classes, classes), dtype=int)
+    confusion = np.zeros((classes, classes), dtype=float)
 
     for i in range(labels.shape[0]):   # iterats
         confusion[true_cls[i], pred_cls[i]] += 1
