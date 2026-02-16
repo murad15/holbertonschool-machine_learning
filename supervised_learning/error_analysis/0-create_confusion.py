@@ -12,6 +12,6 @@ def create_confusion_matrix(labels, logits):
     logs = np.argmax(logits, axis=1)
 
     matrix = np.zeros(shape=(labels.shape[1], labels.shape[1]))
-    for i in labels:
+    for i in labs:
         matrix[labs[i],logs[i]] += 1
     return matrix
