@@ -13,4 +13,4 @@ def f1_score(confusion):
 
     n1 = 2*sensitivity(confusion)*precision(confusion)
     n2 = precision(confusion)+sensitivity(confusion)
-    return f1
+    return n1/n2
