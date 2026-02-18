@@ -10,9 +10,9 @@ def specificity(confusion):
     z = 0
     c = []
     for i in range(confusion.shape[0]):
-        numerator = np.sum(np.delete(np.delete(confusion,i,1),i,0))
-        denominator = np.sum(np.delete(confusion,i,0))
-        sens=numerator/denominator
+        numerator = np.sum(np.delete(np.delete(confusion, i, 1), i, 0))
+        denominator = np.sum(np.delete(confusion, i, 0))
+        sens = numerator/denominator
         c.append(sens)
         z += 1
     c = np.array(c)
