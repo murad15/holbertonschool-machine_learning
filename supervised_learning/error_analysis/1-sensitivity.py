@@ -10,7 +10,7 @@ def sensitivity(confusion):
     z = 0
     c=[]
     for i in range(confusion.shape[0]):
-        sens = float(confusion[i][z]/np.sum(a[i,:]))
+        sens = float(confusion[i][z]/np.sum(confusion[i,:]))
         c.append(sens)
         z += 1
     c = np.array(c)
