@@ -7,7 +7,8 @@ import numpy as np
 
 class Node:
     """qwdwdq wdq qwd w dqw w"""
-    def __init__(self, feature=None, threshold=None, left_child=None, right_child=None, is_root=False, depth=0):
+    def __init__(self, feature=None, threshold=None,
+                 left_child=None, right_child=None, is_root=False, depth=0):
         self.feature = feature
         self.threshold = threshold
         self.left_child = left_child
@@ -19,7 +20,9 @@ class Node:
 
     def max_depth_below(self):
         """qwdwdq wdq qwd w dqw w"""
-        return max(self.left_child.max_depth_below(), self.right_child.max_depth_below())
+        left = self.left_child.max_depth_below()
+        right = self.right_child.max_depth_below()
+        return max(left, right)
 
 
 class Leaf(Node):
@@ -37,7 +40,8 @@ class Leaf(Node):
 
 class Decision_Tree():
     """qwdwdq wdq qwd w dqw w"""
-    def __init__(self, max_depth=10, min_pop=1, seed=0, split_criterion="random", root=None):
+    def __init__(self, max_depth=10, min_pop=1,
+                 seed=0, split_criterion="random", root=None):
         self.rng = np.random.default_rng(seed)
         if root:
             self.root = root
