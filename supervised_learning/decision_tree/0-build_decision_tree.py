@@ -26,15 +26,17 @@ class Leaf(Node):
         self.is_leaf = True
         self.depth = depth
 
-    def max_depth_below(self) :
-        # If both children are None (safety case)
-        if self.left_child is None and self.right_child is None:
-            return self.depth
+    def max_depth_below(self):
+        """
+        Recursively finds the maximum depth of the tree 
+        starting from this node.
+        """
+        # Recursively get the max depth from the left and right subtrees
+        left_max = self.left_child.max_depth_below()
+        right_max = self.right_child.max_depth_below()
 
-        left_depth = self.left_child.max_depth_below() if self.left_child else self.depth
-        right_depth = self.right_child.max_depth_below() if self.right_child else self.depth
-        return max(left_depth, right_depth)
-
+        # Return the greater of the two
+        return max(left_max, right_max)
 
 class Decision_Tree():
     def __init__(self, max_depth=10, min_pop=1, seed=0, split_criterion="random", root=None):
