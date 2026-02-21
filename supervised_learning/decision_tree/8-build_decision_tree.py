@@ -295,7 +295,7 @@ class Decision_Tree:
         """Return tree string."""
         return self.root.__str__()
 
-def possible_thresholds(self, node, feature):
+    def possible_thresholds(self, node, feature):
         """Returns all middle points between sorted unique feature values."""
         values = np.unique((self.explanatory[:, feature])[node.sub_population])
         return (values[1:] + values[:-1]) / 2
@@ -306,10 +306,10 @@ def possible_thresholds(self, node, feature):
         sub_expl = self.explanatory[:, feature][node.sub_population]
         sub_target = self.target[node.sub_population]
         thresholds = self.possible_thresholds(node, feature)
-        
+
         # Unique classes present in the current node
         classes = np.unique(sub_target)
-        
+
         # Reshape for broadcasting:
         # sub_expl: (n, 1, 1) | thresholds: (1, t, 1) | sub_target: (n, 1, 1)
         # classes: (1, 1, c)
@@ -320,20 +320,19 @@ def possible_thresholds(self, node, feature):
         # 1. Indicator for individuals > threshold
         # shape: (n, t) -> (n, t, 1)
         is_left = (sub_expl[:, np.newaxis] > thresholds[np.newaxis, :])
-        
+
         # 2. Indicator for class membership
         # shape: (n, c) -> (n, 1, c)
         is_class = (sub_target[:, np.newaxis] == classes[np.newaxis, :])
-        
-        # 3. Combine: Left_F[i, j, k] is True if individual i is class k 
+        # 3. Combine: Left_F[i, j, k] is True if individual i is class k
         # and satisfies threshold j. shape: (n, t, c)
         left_f = np.logical_and(is_left[:, :, np.newaxis],
                                 is_class[:, np.newaxis, :])
-        
+
         # Counts for left child
         left_class_counts = np.sum(left_f, axis=0)  # (t, c)
         left_total_counts = np.sum(is_left, axis=0)  # (t,)
-        
+
         # Counts for right child (total in node - left)
         # We need total counts of each class in the whole node:
         node_class_counts = np.sum(is_class, axis=0).flatten()  # (c,)
@@ -345,7 +344,7 @@ def possible_thresholds(self, node, feature):
         # We rewrite as: Gini = (total^2 - sum(count^2)) / total^2
         # But we actually want weighted Gini: (total/n_ind) * Gini
         # Simplified: (total^2 - sum(count^2)) / (total * n_ind)
-        
+
         def compute_weighted_gini(class_counts, total_counts):
             """Weighted Gini helper."""
             with np.errstate(divide='ignore', invalid='ignore'):
