@@ -7,6 +7,7 @@ import numpy as np
 
 class Node:
     """Internal split node."""
+
     def __init__(self, feature=None, threshold=None,
                  left_child=None, right_child=None, is_root=False, depth=0):
         """Init node attributes."""
@@ -24,7 +25,8 @@ class Node:
         lines = text.split("\n")
         new_text = "    +--" + lines[0] + "\n"
         for x in lines[1:]:
-            if x: new_text += ("    |  " + x) + "\n"
+            if x:
+                new_text += ("    |  " + x) + "\n"
         return new_text
 
     def right_child_add_prefix(self, text):
@@ -32,7 +34,8 @@ class Node:
         lines = text.split("\n")
         new_text = "    +--" + lines[0] + "\n"
         for x in lines[1:]:
-            if x: new_text += ("       " + x) + "\n"
+            if x:
+                new_text += ("       " + x) + "\n"
         return new_text
 
     def __str__(self):
@@ -56,20 +59,25 @@ class Node:
 
     def max_depth_below(self):
         """Get max depth in subtree."""
-        left = self.left_child.max_depth_below() if self.left_child else self.depth
-        right = self.right_child.max_depth_below() if self.right_child else self.depth
+        lc = self.left_child
+        rc = self.right_child
+        left = lc.max_depth_below() if lc else self.depth
+        right = rc.max_depth_below() if rc else self.depth
         return max(left, right)
 
     def count_nodes_below(self, only_leaves=False):
         """Count nodes in subtree."""
         count = 0 if only_leaves else 1
-        if self.left_child: count += self.left_child.count_nodes_below(only_leaves)
-        if self.right_child: count += self.right_child.count_nodes_below(only_leaves)
+        if self.left_child:
+            count += self.left_child.count_nodes_below(only_leaves)
+        if self.right_child:
+            count += self.right_child.count_nodes_below(only_leaves)
         return count
 
 
 class Leaf(Node):
     """Terminal leaf node."""
+
     def __init__(self, value, depth=None):
         """Init leaf node."""
         super().__init__()
@@ -96,6 +104,7 @@ class Leaf(Node):
 
 class Decision_Tree:
     """Decision tree container."""
+
     def __init__(self, max_depth=10, min_pop=1,
                  seed=0, split_criterion="random", root=None):
         """Init tree."""
