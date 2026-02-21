@@ -47,7 +47,7 @@ class Isolation_Random_Forest():
     - Mean number of nodes           : { np.array(nodes).mean()       }
     - Mean number of leaves          : { np.array(leaves).mean()      }""")
 
-    def suspects(self,explanatory, n_suspects):
+    def suspects(self, explanatory, n_suspects):
         """ returns the n_suspecve the smallest mean depth """
         # Step 1: Get the mean isolation depth for all individuals
         # Outliers have low depth values.
