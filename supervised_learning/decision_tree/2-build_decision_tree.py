@@ -43,37 +43,35 @@ class Node:
         return count
 
     def left_child_add_prefix(self, text):
-        """Add left branch prefix."""
+        """qwqw eqweqwe qweq """
         lines = text.split("\n")
-        new_text = "    +---> " + lines[0] + "\n"
-        for line in lines[1:]:
-            new_text += "    |      " + line + "\n"
-        return new_text.rstrip("\n")
+        new_text = "    +--" + lines[0] + "\n"
+        for x in lines[1:]:
+            if x: # Only add prefix to non-empty lines
+                new_text += ("    |  " + x) + "\n"
+        return new_text
 
     def right_child_add_prefix(self, text):
-        """Add right branch prefix."""
+        """qwqw eqweqwe qweq """
         lines = text.split("\n")
-        new_text = "    +---> " + lines[0] + "\n"
-        for line in lines[1:]:
-            new_text += "           " + line + "\n"
-        return new_text.rstrip("\n")
+        new_text = "    +--" + lines[0] + "\n"
+        for x in lines[1:]:
+            if x:
+                # The right child is the last branch, so we use spaces instead of |
+                new_text += ("       " + x) + "\n"
+        return new_text
 
     def __str__(self):
-        """Return string representation of a node."""
-        if self.is_root:
-            text = f"root [feature={self.feature}, threshold={self.threshold}]"
-        else:
-            text = f"node [feature={self.feature}, threshold={self.threshold}]"
-
-        if self.left_child is not None:
-            left_text = str(self.left_child)
-            text += "\n" + self.left_child_add_prefix(left_text)
-
-        if self.right_child is not None:
-            right_text = str(self.right_child)
-            text += "\n" + self.right_child_add_prefix(right_text)
-
-        return text
+        """qwqw eqweqwe qweq """
+        # Format the current node's decision rule
+        res = f"[feature {self.feature} <= {self.threshold}]\n"
+        # Recursively format the left child
+        if self.left_child:
+            res += self.left_child_add_prefix(self.left_child.__str__())
+        # Recursively format the right child
+        if self.right_child:
+            res += self.right_child_add_prefix(self.right_child.__str__())
+        return res.strip()
 
 
 class Leaf(Node):
