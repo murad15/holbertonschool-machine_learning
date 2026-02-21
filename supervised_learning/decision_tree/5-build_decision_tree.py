@@ -66,3 +66,51 @@ class Node:
         for child in [self.left_child, self.right_child]:
             if child is not None:
                 child.update_bounds_below()
+
+class Leaf(Node):
+    """Terminal leaf node containing a prediction value."""
+
+    def __init__(self, value, depth=None):
+        """Init leaf node."""
+        super().__init__()
+        self.value = value
+        self.is_leaf = True
+        self.depth = depth
+
+    def update_bounds_below(self):
+        """Leaf nodes stop the recursion."""
+        pass
+
+    def get_leaves_below(self):
+        """Return self as leaf."""
+        return [self]
+
+    def __str__(self):
+        """Return leaf string."""
+        return f"-> leaf [value={self.value}]"
+
+
+class Decision_Tree:
+    """Decision tree container and manager."""
+
+    def __init__(self, max_depth=10, min_pop=1,
+                 seed=0, split_criterion="random", root=None):
+        """Init tree."""
+        self.rng = np.random.default_rng(seed)
+        self.root = root if root else Node(is_root=True)
+        self.max_depth = max_depth
+        self.min_pop = min_pop
+        self.split_criterion = split_criterion
+
+    def update_bounds(self):
+        """Compute bounds for all nodes."""
+        self.root.update_bounds_below()
+
+    def get_leaves(self):
+        """Return all tree leaves."""
+        return self.root.get_leaves_below()
+
+    def __str__(self):
+        """Return tree string."""
+        return self.root.__str__()
+
