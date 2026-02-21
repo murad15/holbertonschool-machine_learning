@@ -25,27 +25,32 @@ class Node:
     def update_bounds_below(self):
         """Recursively compute feature bounds for all sub-nodes."""
         if self.is_root:
-            # Initialize with global bounds (all features)
             self.upper = {0: np.inf}
             self.lower = {0: -np.inf}
 
-        # Handle Left Child (Values <= threshold)
-        if self.left_child:
-            self.left_child.lower = self.lower.copy()
-            self.left_child.upper = self.upper.copy()
-            # The split feature's upper bound is now the threshold
+        for child in [self.left_child, self.right_child]:
+            if child is not None:
+                child.lower = self.lower.copy()
+                child.upper = self.upper.copy()
+
+        if self.left_child is not None:
             self.left_child.upper[self.feature] = self.threshold
 
-        # Handle Right Child (Values > threshold)
-        if self.right_child:
-            self.right_child.lower = self.lower.copy()
-            self.right_child.upper = self.upper.copy()
-            # The split feature's lower bound is now the threshold
+        if self.right_child is not None:
             self.right_child.lower[self.feature] = self.threshold
 
         for child in [self.left_child, self.right_child]:
-            if child:
+            if child is not None:
                 child.update_bounds_below()
+
+    def get_leaves_below(self):
+        """Recursively gathers all Leaf instances."""
+        leaves = []
+        if self.left_child:
+            leaves.extend(self.left_child.get_leaves_below())
+        if self.right_child:
+            leaves.extend(self.right_child.get_leaves_below())
+        return leaves
 
     def left_child_add_prefix(self, text):
         """Prefix left branch text."""
@@ -90,6 +95,10 @@ class Leaf(Node):
         """Leaf nodes stop the recursion."""
         pass
 
+    def get_leaves_below(self):
+        """Return self as leaf."""
+        return [self]
+
     def __str__(self):
         """Return leaf string."""
         return f"-> leaf [value={self.value}]"
@@ -108,8 +117,12 @@ class Decision_Tree:
         self.split_criterion = split_criterion
 
     def update_bounds(self):
-        """Compute bounds for all nodes in the tree."""
+        """Compute bounds for all nodes."""
         self.root.update_bounds_below()
+
+    def get_leaves(self):
+        """Return all tree leaves."""
+        return self.root.get_leaves_below()
 
     def __str__(self):
         """Return tree string."""
