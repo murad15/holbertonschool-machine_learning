@@ -42,6 +42,7 @@ class Node:
 
         return count
 
+
 class Leaf(Node):
     """qwdwdq wdq qwd w dqw w"""
     def __init__(self, value, depth=None):
