@@ -25,7 +25,7 @@ class Node:
         return max(left, right)
 
     def count_nodes_below(self, only_leaves=False):
-        """qwqe qweqw qweqw eqweqwe"""
+        """qw asd ad asd ad eqweqwe"""
         count = 0
 
         # Count current node if we are counting all nodes
@@ -43,31 +43,34 @@ class Node:
         return count
 
     def left_child_add_prefix(self, text):
-        """Add left-branch prefix to subtree text."""
+        """Add left branch prefix."""
         lines = text.split("\n")
-        new_text = "    +--" + lines[0] + "\n"
-        for x in lines[1:]:
-            new_text += "    |  " + x + "\n"
-        return new_text
+        new_text = "    +---> " + lines[0] + "\n"
+        for line in lines[1:]:
+            new_text += "    |      " + line + "\n"
+        return new_text.rstrip("\n")
 
     def right_child_add_prefix(self, text):
-        """Add right-branch prefix to subtree text."""
+        """Add right branch prefix."""
         lines = text.split("\n")
-        new_text = "    +--" + lines[0] + "\n"
-        for x in lines[1:]:
-            new_text += "       " + x + "\n"
-        return new_text
+        new_text = "    +---> " + lines[0] + "\n"
+        for line in lines[1:]:
+            new_text += "           " + line + "\n"
+        return new_text.rstrip("\n")
 
     def __str__(self):
         """Return string representation of a node."""
-        text = f"[feature={self.feature} <= {self.threshold}]"
+        if self.is_root:
+            text = f"root [feature={self.feature}, threshold={self.threshold}]"
+        else:
+            text = f"node [feature={self.feature}, threshold={self.threshold}]"
 
         if self.left_child is not None:
-            left_text = self.left_child.__str__()
+            left_text = str(self.left_child)
             text += "\n" + self.left_child_add_prefix(left_text)
 
         if self.right_child is not None:
-            right_text = self.right_child.__str__()
+            right_text = str(self.right_child)
             text += "\n" + self.right_child_add_prefix(right_text)
 
         return text
