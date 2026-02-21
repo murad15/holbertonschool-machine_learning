@@ -77,6 +77,7 @@ class Random_Forest():
         return np.sum(np.equal(self.predict(test_explanatory),
                                test_target)) / test_target.size
 
+
 class Node:
     """Internal split node representing a decision point."""
 
