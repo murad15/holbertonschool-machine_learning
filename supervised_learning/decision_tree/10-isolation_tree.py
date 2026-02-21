@@ -96,7 +96,7 @@ class Isolation_Random_Tree():
         right_population = np.logical_and(node.sub_population,
                                           feat_vals <= node.threshold)
 
-        # Different from Decision_Tree: we only stop at max_depth 
+        # Different from Decision_Tree: we only stop at max_depth
         # or when population is too small (usually 1)
         def is_leaf(pop, depth):
             pop_count = np.sum(pop)
