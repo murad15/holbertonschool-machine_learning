@@ -246,13 +246,14 @@ class Decision_Tree:
 
         self.fit_node(self.root)
         self.update_predict()
+        self.cou = self.count_nodes(True)
         self.acc = self.accuracy(self.explanatory, self.target)
 
         if verbose == 1:
             print(f"  Training finished.\n"
                   f"    - Depth                     : {self.depth()}\n"
                   f"    - Number of nodes           : {self.count_nodes()}\n"
-                  f"    - Number of leaves          : {self.count_nodes(True)}\n"
+                  f"    - Number of leaves          : {self.cou}\n"
                   f"    - Accuracy on training data : {self.acc}")
 
     def accuracy(self, test_explanatory, test_target):
