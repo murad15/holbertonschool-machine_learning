@@ -64,15 +64,15 @@ class Node:
     def __str__(self):
         """qwqw eqweqwe qweq """
         # Format the current node's decision rule
-        res = f"[feature {self.feature} <= {self.threshold}]\n"
-        # Recursively format the left child
+        label = "root" if self.is_root else "node"
+        res = f"{label} [feature={self.feature}, threshold={self.threshold}]\n"
+        # Add left child branches (if any)
         if self.left_child:
             res += self.left_child_add_prefix(self.left_child.__str__())
-        # Recursively format the right child
+        # Add right child branches (if any)
         if self.right_child:
             res += self.right_child_add_prefix(self.right_child.__str__())
-        return res.strip()
-
+        return res.rstrip()
 
 class Leaf(Node):
     """qwdwdq wdq qwd w dqw w"""
