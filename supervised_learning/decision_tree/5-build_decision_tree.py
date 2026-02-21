@@ -67,6 +67,44 @@ class Node:
             if child is not None:
                 child.update_bounds_below()
 
+    def get_leaves_below(self):
+        """Recursively gathers all Leaf instances."""
+        leaves = []
+        if self.left_child:
+            leaves.extend(self.left_child.get_leaves_below())
+        if self.right_child:
+            leaves.extend(self.right_child.get_leaves_below())
+        return leaves
+
+    def left_child_add_prefix(self, text):
+        """Prefix left branch text."""
+        lines = text.split("\n")
+        new_text = "    +--" + lines[0] + "\n"
+        for x in lines[1:]:
+            if x:
+                new_text += ("    |  " + x) + "\n"
+        return new_text
+
+    def right_child_add_prefix(self, text):
+        """Prefix right branch text."""
+        lines = text.split("\n")
+        new_text = "    +--" + lines[0] + "\n"
+        for x in lines[1:]:
+            if x:
+                new_text += ("       " + x) + "\n"
+        return new_text
+
+    def __str__(self):
+        """Return node string."""
+        label = "root" if self.is_root else "node"
+        res = f"{label} [feature={self.feature}, threshold={self.threshold}]\n"
+        if self.left_child:
+            res += self.left_child_add_prefix(self.left_child.__str__())
+        if self.right_child:
+            res += self.right_child_add_prefix(self.right_child.__str__())
+        return res.rstrip()
+
+
 class Leaf(Node):
     """Terminal leaf node containing a prediction value."""
 
