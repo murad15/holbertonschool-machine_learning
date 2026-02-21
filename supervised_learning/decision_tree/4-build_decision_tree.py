@@ -34,10 +34,10 @@ class Node:
                 child.upper = self.upper.copy()
 
         if self.left_child is not None:
-            self.left_child.upper[self.feature] = self.threshold
+            self.left_child.lower[self.feature] = self.threshold
 
         if self.right_child is not None:
-            self.right_child.lower[self.feature] = self.threshold
+            self.right_child.upper[self.feature] = self.threshold
 
         for child in [self.left_child, self.right_child]:
             if child is not None:
