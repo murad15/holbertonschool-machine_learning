@@ -1,0 +1,68 @@
+#!/usr/bin/env python3
+"""Something that function does"""
+
+
+import numpy as np
+
+
+class Node:
+    """Internal split node."""
+
+    def __init__(self, feature=None, threshold=None,
+                 left_child=None, right_child=None, is_root=False, depth=0):
+        """Init node attributes."""
+        self.feature = feature
+        self.threshold = threshold
+        self.left_child = left_child
+        self.right_child = right_child
+        self.is_leaf = False
+        self.is_root = is_root
+        self.sub_population = None
+        self.depth = depth
+        self.lower = None
+        self.upper = None
+        self.indicator = None
+
+    def update_indicator(self):
+        """Compute the indicator function based on feature bounds."""
+        def is_large_enough(x):
+            """Check if all features are > lower bounds."""
+            # Creates a boolean array for each feature constraint
+            comparisons = [np.greater(x[:, key], self.lower[key])
+                           for key in self.lower.keys()]
+            # Returns True only if ALL feature constraints are met per row
+            return np.all(comparisons, axis=0)
+
+        def is_small_enough(x):
+            """Check if all features are <= upper bounds."""
+            # Creates a boolean array for each feature constraint
+            comparisons = [np.less_equal(x[:, key], self.upper[key])
+                           for key in self.upper.keys()]
+            # Returns True only if ALL feature constraints are met per row
+            return np.all(comparisons, axis=0)
+
+        # The indicator is True if the sample is both large and small enough
+        self.indicator = lambda x: np.all(np.array([is_large_enough(x),
+                                                    is_small_enough(x)]),
+                                          axis=0)
+
+    def update_bounds_below(self):
+        """Recursively compute feature bounds for all sub-nodes."""
+        if self.is_root:
+            self.upper = {0: np.inf}
+            self.lower = {0: -np.inf}
+
+        for child in [self.left_child, self.right_child]:
+            if child is not None:
+                child.lower = self.lower.copy()
+                child.upper = self.upper.copy()
+
+        if self.left_child is not None:
+            self.left_child.lower[self.feature] = self.threshold
+
+        if self.right_child is not None:
+            self.right_child.upper[self.feature] = self.threshold
+
+        for child in [self.left_child, self.right_child]:
+            if child is not None:
+                child.update_bounds_below()
