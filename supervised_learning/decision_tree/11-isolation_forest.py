@@ -54,7 +54,7 @@ class Isolation_Random_Forest() :
         # Step 3: Select the first n_suspects indices
         suspect_indices = indices[:n_suspects]
         # Step 4: Return the actual rows from the explanatory matrix
-        return explanatory[suspect_indices]
+        return explanatory[suspect_indices], depths[suspect_indices]
 
 
 class Isolation_Random_Tree():
