@@ -151,4 +151,3 @@ class Decision_Tree:
     def __str__(self):
         """Return tree string."""
         return self.root.__str__()
-
