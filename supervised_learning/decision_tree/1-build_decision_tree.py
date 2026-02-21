@@ -25,22 +25,22 @@ class Node:
         return max(left, right)
 
     def count_nodes_below(self, only_leaves=False):
-       """qwqe qweqw qweqw eqweqwe"""
-       count = 0
+        """qwqe qweqw qweqw eqweqwe"""
+        count = 0
 
-       # Count current node if we are counting all nodes
-       if not only_leaves:
-           count = 1
+        # Count current node if we are counting all nodes
+        if not only_leaves:
+            count = 1
 
-       # Recurse left
-       if self.left_child is not None:
-           count += self.left_child.count_nodes_below(only_leaves)
+        # Recurse left
+        if self.left_child is not None:
+            count += self.left_child.count_nodes_below(only_leaves)
 
-       # Recurse right
-       if self.right_child is not None:
-           count += self.right_child.count_nodes_below(only_leaves)
+        # Recurse right
+        if self.right_child is not None:
+            count += self.right_child.count_nodes_below(only_leaves)
 
-       return count
+        return count
 
 class Leaf(Node):
     """qwdwdq wdq qwd w dqw w"""
