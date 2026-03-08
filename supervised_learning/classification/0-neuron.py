@@ -7,9 +7,9 @@ class Neuron:
     """Something that function does"""
 
     def __init__(self, nx):
-        if not isinstance(self.nx, int):
+        if not isinstance(nx, int):
             raise TypeError("nx must be an integer")
-        if self.nx < 1:
+        if nx < 1:
             raise ValueError("nx must be a positive integer")
 
         # Weights initialized with random normal distribution
