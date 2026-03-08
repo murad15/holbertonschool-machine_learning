@@ -8,7 +8,7 @@ class Neuron:
     """Class that defines a single neuron performing binary classification"""
 
     def __init__(self, nx):
-        """Initialize the neuron"""
+        """Initialize the neuron qwdq wq dasd asd"""
         if not isinstance(nx, int):
             raise TypeError("nx must be an integer")
 
@@ -22,17 +22,17 @@ class Neuron:
 
     @property
     def W(self):
-        """Getter for weights"""
+        """Getter for weights dasdas ad as asd asd a"""
         return self.__W
 
     @property
     def b(self):
-        """Getter for bias"""
+        """Getter for bias sdf sdf sdf sdfqw"""
         return self.__b
 
     @property
     def A(self):
-        """Getter for activated output"""
+        """Getter for activated output dqdwd qd """
         return self.__A
 
     def forward_prop(self, X):
