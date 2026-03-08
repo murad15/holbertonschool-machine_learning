@@ -19,7 +19,6 @@ class Neuron:
 
         self.__A = 0
 
-
     @property
     def W(self):
         """Getter for weights"""
