@@ -3,6 +3,7 @@
 
 import numpy as np
 
+
 class Neuron:
     """Something that function does"""
 
