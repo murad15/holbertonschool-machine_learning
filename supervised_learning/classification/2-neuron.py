@@ -36,10 +36,7 @@ class Neuron:
         return self.__A
 
     def forward_prop(self, X):
-        """
-        Calculates forward propagation using sigmoid activation
-        X: numpy.ndarray with shape (nx, m)
-        """
+        """Calculates dfs df sfs fdsfd"""
         Z = np.dot(self.__W, X) + self.__b
         self.__A = 1 / (1 + np.exp(-Z))
         return self.__A
