@@ -42,4 +42,4 @@ class Neuron:
         """
         Z = np.dot(self.__W, X) + self.__b
         self.__A = 1 / (1 + np.exp(-Z))
-        return self.__A 
+        return self.__A
