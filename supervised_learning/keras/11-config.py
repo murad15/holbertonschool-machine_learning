@@ -8,10 +8,11 @@ import tensorflow.keras as K
 def save_config(network, filename):
     """Something that function does"""
 
-    network.save_config(filename)
+    network.save(filename, save_format="JSON")
 
 
 def load_config(network, filename):
     """Something that function does"""
 
-    network.load_config(filename)
+    network = K.models.model_from_json(filename)
+    return network
