@@ -35,13 +35,10 @@ def train_model(network, data, labels, batch_size,
         if learning_rate_decay:
             def lr_decay(epoch):
                 lr = alpha / (1 + decay_rate * epoch)
-                print(f"\nEpoch {epoch + 1}: "
-                      f"LearningRateScheduler reducing "
-                      f"learning rate to {lr}.")
                 return lr
 
             lr_scheduler = K.callbacks.LearningRateScheduler(
-                lr_decay
+                lr_decay, verbose=1
             )
             callbacks.append(lr_scheduler)
 
