@@ -41,8 +41,7 @@ def train_model(network, data, labels, batch_size,
                 return lr
 
             lr_scheduler = K.callbacks.LearningRateScheduler(
-                lr_decay,
-                verbose=1
+                lr_decay
             )
             callbacks.append(lr_scheduler)
 
