@@ -30,5 +30,4 @@ def train_model(network, data, labels, batch_size,
             validation_data=validation_data
         )
 
-
     return history
