@@ -11,6 +11,7 @@ def save_config(network, filename):
     with open(filename, 'w') as f:
         f.write(network.to_json())
 
+
 def load_config(network, filename):
     """Something that function does"""
 
