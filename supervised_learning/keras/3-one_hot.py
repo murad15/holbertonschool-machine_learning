@@ -8,8 +8,4 @@ import tensorflow.keras as K
 def one_hot(labels, classes=None):
     """Something that function does"""
 
-    onehot_labels = K.ops.one_hot(
-        labels, num_classes=classes, axis=-1
-    )
-
-    return onehot_labels
+    return K.utils.to_categorical(labels, num_classes=classes)
