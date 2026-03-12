@@ -1,0 +1,12 @@
+#!/usr/bin/env python3
+"""Something that function does"""
+
+
+import numpy as np
+
+
+def normalize(X, m, s):
+    """Something that function does"""
+
+    X_new = (X - m)/s
+    return X_new
