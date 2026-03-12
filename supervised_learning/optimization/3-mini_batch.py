@@ -14,6 +14,6 @@ def create_mini_batches(X, Y, batch_size):
     for i in range(0, X.shape[0], batch_size):
         X_batch = X_s[i:i+batch_size]
         Y_batch = Y_s[i:i+batch_size]
-        batchs.append(X_batch, Y_batch)
+        batchs.append((X_batch, Y_batch))
 
     return batchs
