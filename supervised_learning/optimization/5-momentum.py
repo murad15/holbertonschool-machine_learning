@@ -9,4 +9,4 @@ def update_variables_momentum(alpha, beta1, var, grad, v):
 
     var_n = var - alpha * v1
 
-    return var_n, v1 
+    return var_n, v1
