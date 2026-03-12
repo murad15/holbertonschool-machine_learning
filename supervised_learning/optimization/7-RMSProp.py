@@ -10,6 +10,6 @@ def update_variables_RMSProp(alpha, beta2, epsilon, var, grad, s):
 
     e_s = beta2 * s + (1 - beta2) * grad
 
-    var_n = var - (alpha / np.sqrt(e_s + epsilon))
+    var_n = var - (alpha / np.sqrt(e_s + epsilon)) * grad
 
     retrun var_n, e_s
