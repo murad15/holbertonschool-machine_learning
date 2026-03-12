@@ -5,4 +5,4 @@
 def moving_average(data, beta):
     """Something that function does"""
 
-    return data*beta
+    return data*beta*(1/(1-beta))
