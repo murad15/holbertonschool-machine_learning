@@ -17,7 +17,7 @@ def l2_reg_gradient_descent(Y, weights, cache, alpha, lambtha, L):
         db = (1 / m) * np.sum(dZ, axis=1, keepdims=True)
 
         if i > 1:
-            A_prev_activation = cache["A" + str(l - 1)]
+            A_prev_activation = cache["A" + str(i - 1)]
             r = (1 - np.power(A_prev_activation, 2))
             dZ = np.matmul(W.T, dZ) * r
 
