@@ -8,14 +8,7 @@ import tensorflow as tf
 def l2_reg_cost(cost, model):
     """Return total cost including L2 regularization"""
 
-    costs = []
+    l2_penalties = tf.math.add_n(model.losses)
 
-    for i, layer in enumerate(model.layers):
-        if layer.losses:
-            reg = tf.add_n(layer.losses)
-        else:
-            reg = 0
-
-        costs.append(cost + reg)
-
-    return tf.stack(costs)
+    total_cost = cost + l2_penalties
+    return total_cos
