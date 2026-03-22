@@ -22,7 +22,7 @@ def dropout_forward_prop(X, weights, L, keep_prob):
             # Tanh activation for hidden layers
             A = np.tanh(Z)
             mask = (np.random.rand(A.shape[0], A.shape[1])
-                      < keep_prob).astype(int)
+                    < keep_prob).astype(int)
             A = (A * mask) / keep_prob
             cache[f'D{i}'] = mask
             cache[f'A{i}'] = A
