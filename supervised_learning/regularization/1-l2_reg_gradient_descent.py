@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
 """Something that function does"""
 
+
 import numpy as np
+
 
 def l2_reg_gradient_descent(Y, weights, cache, alpha, lambtha, L):
     """Updates w and b using gradient with L2"""
