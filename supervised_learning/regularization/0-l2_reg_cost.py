@@ -4,6 +4,7 @@
 
 import numpy as np
 
+
 def l2_reg_cost(cost, lambtha, weights, L, m):
     """
     Calculates the costwork with L2 regularization
@@ -20,8 +21,8 @@ def l2_reg_cost(cost, lambtha, weights, L, m):
 
     L2_sum = 0
     # Sum of squared weights (exclude biases)
-    for l in range(1, L + 1):
-        W = weights["W" + str(l)]
+    for i in range(1, L + 1):
+        W = weights["W" + str(i)]
         L2_sum += np.sum(np.square(W))
     # L2 regularization term
     L2_cost = (lambtha / (2 * m)) * L2_sum
