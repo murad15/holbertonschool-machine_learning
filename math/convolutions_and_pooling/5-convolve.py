@@ -32,6 +32,6 @@ def convolve(images, kernels, padding='same', stride=(1, 1)):
         for j in range(ow):
             for q in range(nc):
                 img_slice = images_padded[:, i*sh:i*sh+kh, j*sw:j*sw+kw, :]
-                output[:, i, j] = np.sum(img_slice * kernel[:,:,:,q], axis=(1, 2, 3))
+                output[:, i, j] = np.sum(img_slice * kernels[:,:,:,q], axis=(1, 2, 3))
 
     return output
