@@ -98,5 +98,5 @@ class DeepNeuralNetwork:
             self.__weights["b{}".format(i)] -= alpha * db
 
             if i > 1:
-                A_prev = cache["A{}".format(l - 1)]
+                A_prev = cache["A{}".format(i - 1)]
                 dZ = np.matmul(W.T, dZ) * (A_prev * (1 - A_prev))
