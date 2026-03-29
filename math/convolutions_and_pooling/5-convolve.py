@@ -9,7 +9,7 @@ def convolve(images, kernels, padding='same', stride=(1, 1)):
     """Something that function does"""
 
     m, h, w, c = images.shape
-    kh, kw, c, nc = kernel.shape
+    kh, kw, c, nc = kernels.shape
     sh, sw = stride
 
     if padding == 'same':
