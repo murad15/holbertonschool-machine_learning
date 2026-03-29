@@ -87,16 +87,16 @@ class DeepNeuralNetwork:
         weights = self.__weights.copy()
         dZ = cache["A{}".format(self.__L)] - Y
 
-        for l in reversed(range(1, self.__L + 1)):
-            A_prev = cache["A{}".format(l - 1)]
-            W = weights["W{}".format(l)]
+        for i in reversed(range(1, self.__L + 1)):
+            A_prev = cache["A{}".format(i - 1)]
+            W = weights["W{}".format(i)]
 
             dW = np.matmul(dZ, A_prev.T) / m
             db = np.sum(dZ, axis=1, keepdims=True) / m
 
-            self.__weights["W{}".format(l)] = W - alpha * dW
-            self.__weights["b{}".format(l)] -= alpha * db
+            self.__weights["W{}".format(i)] = W - alpha * dW
+            self.__weights["b{}".format(i)] -= alpha * db
 
-            if l > 1:
+            if i > 1:
                 A_prev = cache["A{}".format(l - 1)]
                 dZ = np.matmul(W.T, dZ) * (A_prev * (1 - A_prev))
