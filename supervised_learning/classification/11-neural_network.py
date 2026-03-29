@@ -61,5 +61,5 @@ class NeuralNetwork:
         """Forward propagation for NN"""
         m = Y.shape[1]
         cost = -np.sum(Y * np.log(A) +
-                   (1 - Y) * np.log(1.0000001 - A)) / m
+                       (1 - Y) * np.log(1.0000001 - A)) / m
         return cost
