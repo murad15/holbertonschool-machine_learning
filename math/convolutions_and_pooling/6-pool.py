@@ -26,5 +26,4 @@ def pool(images, kernel_shape, stride, mode='max'):
             else:
                 output[:, i, j, :] = np.mean(img_slice, axis=(1,2))
 
-
     return output
