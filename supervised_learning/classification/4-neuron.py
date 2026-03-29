@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """qwdqd qwq d qwd qd qwd qwd wqd"""
 
+
 import numpy as np
 
 
@@ -49,7 +50,7 @@ class Neuron:
         return cost
 
     def evaluate(self, X, Y):
-       """Calculates cost of neural net"""
+        """Calculates cost of neural net"""
         A = self.forward_prop(X)
         prediction = (A >= 0.5).astype(int)
         cost = self.cost(Y, A)
