@@ -22,8 +22,8 @@ def pool(images, kernel_shape, stride, mode='max'):
         for j in range(ow):
             img_slice = images[:, i*sh:i*sh+kh, j*sw:j*sw+kw, :]
             if mode == 'max':
-                output[:, i, j, :] = np.max(img_slice, axis=(1,2))
+                output[:, i, j, :] = np.max(img_slice, axis=(1, 2))
             else:
-                output[:, i, j, :] = np.mean(img_slice, axis=(1,2))
+                output[:, i, j, :] = np.mean(img_slice, axis=(1, 2))
 
     return output
