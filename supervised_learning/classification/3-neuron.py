@@ -42,6 +42,7 @@ class Neuron:
         return self.__A
 
     def cost(self, Y, A):
+        """Calculates cost of neural net"""
         m = Y.shape[1]
         cost = -np.sum(Y * np.log(A) +
                        (1 - Y) * np.log(1.0000001 - A)) / m
