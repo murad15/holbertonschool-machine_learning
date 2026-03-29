@@ -6,7 +6,7 @@ import numpy as np
 
 
 class DeepNeuralNetwork:
-    """Deep neural network performing binary classification"""
+    """Deep neural network perming binary classification"""
 
     def __init__(self, nx, layers):
         if not isinstance(nx, int):
