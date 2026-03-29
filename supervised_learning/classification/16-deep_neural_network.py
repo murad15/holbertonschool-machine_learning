@@ -25,16 +25,15 @@ class DeepNeuralNetwork:
         self.cache = {}
         self.weights = {}
 
-        for l in range(self.L):
-            if not isinstance(layers[l], int) or layers[l] <= 0:
+        for i in range(self.L):
+            # Validate the element first to satisfy the order of exceptions
+            if not isinstance(layers[i], int) or layers[i] <= 0:
                 raise TypeError("layers must be a list of positive integers")
-
-            # Determine input size for the current layer
-            # Layer 1 (index 0) takes nx as input; others take layers[l-1]
-            n_prev = nx if l == 0 else layers[l - 1]
-            n_curr = layers[l]
-
-            # He et al. initialization
-            self.weights[f'W{l + 1}'] = np.random.randn(n_curr, n_prev) * np.sqrt(2 / n_prev)
-            # Bias initialization to 0
-            self.weights[f'b{l + 1}'] = np.zeros((n_curr, 1))
+            # Initialization logic
+            n_curr = layers[i]
+            n_prev = nx if i == 0 else layers[i - 1]
+            # He initialization: W = randn * sqrt(2/n_prev)
+            self.weights["W{}".format(i + 1)] = (
+                np.random.randn(n_curr, n_prev) * np.sqrt(2 / n_prev)
+            )
+            self.weights["b{}".format(i + 1)] = np.zeros((n_curr, 1))
