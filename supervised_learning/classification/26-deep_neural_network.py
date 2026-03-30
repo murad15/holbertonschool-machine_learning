@@ -1,128 +1,102 @@
 #!/usr/bin/env python3
-"""Module for DeepNeuralNetwork class with private attributes"""
+"""Deep Neural Network"""
 
 
 import numpy as np
 import pickle
-import os
 
 
 class DeepNeuralNetwork:
-    """Defines a deep neural network performing binary classification"""
+    """Defines a deep neural network"""
 
     def __init__(self, nx, layers):
-        """Class constructor"""
-
         if not isinstance(nx, int):
             raise TypeError("nx must be an integer")
         if nx < 1:
             raise ValueError("nx must be a positive integer")
 
-        if not isinstance(layers, list) or len(layers) == 0:
+        if (not isinstance(layers, list) or len(layers) == 0 or
+                not all(isinstance(x, int) and x > 0 for x in layers)):
             raise TypeError("layers must be a list of positive integers")
-
-        for layer in layers:
-            if not isinstance(layer, int) or layer <= 0:
-                raise TypeError("layers must be a list of positive integers")
 
         self.__L = len(layers)
         self.__cache = {}
         self.__weights = {}
 
         for i in range(self.__L):
+            if i == 0:
+                w = np.random.randn(layers[i], nx) * np.sqrt(2/nx)
+            else:
+                w = np.random.randn(layers[i], layers[i-1]) * \
+                    np.sqrt(2/layers[i-1])
 
-            n_curr = layers[i]
-            n_prev = nx if i == 0 else layers[i - 1]
-
-            self.__weights["W{}".format(i + 1)] = (
-                np.random.randn(n_curr, n_prev) * np.sqrt(2 / n_prev)
-            )
-
-            self.__weights["b{}".format(i + 1)] = np.zeros((n_curr, 1))
+            self.__weights["W{}".format(i+1)] = w
+            self.__weights["b{}".format(i+1)] = np.zeros((layers[i], 1))
 
     @property
     def L(self):
-        """Getter for number of layers"""
         return self.__L
 
     @property
     def cache(self):
-        """Getter for cache"""
         return self.__cache
 
     @property
     def weights(self):
-        """Getter for weights"""
         return self.__weights
 
     def forward_prop(self, X):
-        """Calculates forward propagation of the neural network"""
-
+        """Forward propagation"""
         self.__cache["A0"] = X
 
-        for i in range(1, self.__L + 1):
-
-            W = self.__weights["W{}".format(i)]
-            b = self.__weights["b{}".format(i)]
-            A_prev = self.__cache["A{}".format(i - 1)]
+        for i in range(self.__L):
+            W = self.__weights["W{}".format(i+1)]
+            b = self.__weights["b{}".format(i+1)]
+            A_prev = self.__cache["A{}".format(i)]
 
             Z = np.matmul(W, A_prev) + b
-            A = 1 / (1 + np.exp(-Z))
+            A = 1/(1 + np.exp(-Z))
 
-            self.__cache["A{}".format(i)] = A
+            self.__cache["A{}".format(i+1)] = A
 
         return A, self.__cache
 
     def cost(self, Y, A):
-        """Calculates cost using logistic regression"""
-
+        """Cost function"""
         m = Y.shape[1]
-
-        cost = -np.sum(
-            Y * np.log(A) + (1 - Y) * np.log(1.0000001 - A)
-        ) / m
-
-        return cost
+        return -np.sum(Y*np.log(A) + (1-Y)*np.log(1.0000001-A)) / m
 
     def evaluate(self, X, Y):
-        """Evaluates the neural network"""
-
+        """Evaluate predictions"""
         A, _ = self.forward_prop(X)
-
         cost = self.cost(Y, A)
-
-        prediction = (A >= 0.5).astype(int)
-
+        prediction = np.where(A >= 0.5, 1, 0)
         return prediction, cost
 
     def gradient_descent(self, Y, cache, alpha=0.05):
-        """Calculates one pass of gradient descent"""
-
+        """Gradient descent"""
         m = Y.shape[1]
-
         weights = self.__weights.copy()
 
-        dZ = cache["A{}".format(self.__L)] - Y
+        for i in reversed(range(self.__L)):
+            A = cache["A{}".format(i+1)]
+            A_prev = cache["A{}".format(i)]
 
-        for i in reversed(range(1, self.__L + 1)):
+            if i == self.__L-1:
+                dZ = A - Y
+            else:
+                W_next = weights["W{}".format(i+2)]
+                dZ = np.matmul(W_next.T, dZ) * (A*(1-A))
 
-            A_prev = cache["A{}".format(i - 1)]
-            W = weights["W{}".format(i)]
+            dW = np.matmul(dZ, A_prev.T)/m
+            db = np.sum(dZ, axis=1, keepdims=True)/m
 
-            dW = np.matmul(dZ, A_prev.T) / m
-            db = np.sum(dZ, axis=1, keepdims=True) / m
+            self.__weights["W{}".format(i+1)] -= alpha*dW
+            self.__weights["b{}".format(i+1)] -= alpha*db
 
-            self.__weights["W{}".format(i)] = W - alpha * dW
-            self.__weights["b{}".format(i)] -= alpha * db
-
-            if i > 1:
-
-                A_prev = cache["A{}".format(i - 1)]
-
-                dZ = np.matmul(W.T, dZ) * (A_prev * (1 - A_prev))
-
-    def train(self, X, Y, iterations=5000, alpha=0.05):
-        """Trains the neural network"""
+    def train(self, X, Y, iterations=5000, alpha=0.05,
+              verbose=True, graph=True, step=100):
+        """Train network"""
 
         if not isinstance(iterations, int):
             raise TypeError("iterations must be an integer")
@@ -134,17 +108,16 @@ class DeepNeuralNetwork:
         if alpha <= 0:
             raise ValueError("alpha must be positive")
 
-        for i in range(iterations + 1):
-
+        for i in range(iterations+1):
             A, cache = self.forward_prop(X)
 
             if i < iterations:
                 self.gradient_descent(Y, cache, alpha)
 
         return self.evaluate(X, Y)
-    def save(self, filename):
-        """Saves the instance object to a file in pickle format"""
 
+    def save(self, filename):
+        """Save model"""
         if not filename.endswith(".pkl"):
             filename += ".pkl"
 
@@ -153,10 +126,9 @@ class DeepNeuralNetwork:
 
     @staticmethod
     def load(filename):
-        """Loads a pickled DeepNeuralNetwork object"""
-
-        if not os.path.exists(filename):
+        """Load model"""
+        try:
+            with open(filename, "rb") as f:
+                return pickle.load(f)
+        except Exception:
             return None
-
-        with open(filename, "rb") as f:
-            return pickle.load(f)
