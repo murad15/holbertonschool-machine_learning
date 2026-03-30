@@ -81,26 +81,27 @@ class DeepNeuralNetwork:
         prediction = (A >= 0.5).astype(int)
         return prediction, cost
 
-    def gradient_descent(self, Y, cache, alpha=0.05):
+    def gradient_descent(self, Y, alpha=0.05):
         """Calculates one pass of gradient descent"""
         m = Y.shape[1]
-        weights = self.__weights.copy()
-        dZ = cache["A{}".format(self.__L)] - Y
+        L = self.__L
+        cache = self.__cache
+        weights = self.__weights
+        dZ = cache["A{}".format(L)] - Y
 
-        for i in reversed(range(1, self.__L + 1)):
+        for i in reversed(range(1, L + 1)):
             A_prev = cache["A{}".format(i - 1)]
             W = weights["W{}".format(i)]
 
             dW = np.matmul(dZ, A_prev.T) / m
             db = np.sum(dZ, axis=1, keepdims=True) / m
 
-            self.__weights["W{}".format(i)] = W - alpha * dW
+            self.__weights["W{}".format(i)] -= alpha * dW
             self.__weights["b{}".format(i)] -= alpha * db
 
             if i > 1:
                 A_prev = cache["A{}".format(i - 1)]
                 dZ = np.matmul(W.T, dZ) * (A_prev * (1 - A_prev))
-
     def train(self, X, Y, iterations=5000, alpha=0.05, verbose=True, graph=True, step=100):
         """
         Trains the deep neural network
