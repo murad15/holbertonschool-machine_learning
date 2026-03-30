@@ -4,6 +4,9 @@
 
 import numpy as np
 import pickle
+import os
+import matplotlib.pyplot as plt
+
 
 class DeepNeuralNetwork:
     """Defines a deep neural network performing binary classification"""
@@ -87,6 +90,7 @@ class DeepNeuralNetwork:
         L = self.__L
         cache = self.__cache
         weights = self.__weights
+
         dZ = cache["A{}".format(L)] - Y
 
         for i in reversed(range(1, L + 1)):
@@ -102,10 +106,10 @@ class DeepNeuralNetwork:
             if i > 1:
                 A_prev = cache["A{}".format(i - 1)]
                 dZ = np.matmul(W.T, dZ) * (A_prev * (1 - A_prev))
-    def train(self, X, Y, iterations=5000, alpha=0.05, verbose=True, graph=True, step=100):
-        """
-        Trains the deep neural network
-        """
+
+    def train(self, X, Y, iterations=5000, alpha=0.05,
+              verbose=True, graph=True, step=100):
+        """Trains the deep neural network"""
         # Input validations
         if not isinstance(iterations, int):
             raise TypeError("iterations must be an integer")
@@ -127,19 +131,15 @@ class DeepNeuralNetwork:
             A, _ = self.forward_prop(X)
             cost = self.cost(Y, A)
 
-            # Record cost for graphing
             if (i % step == 0) or (i == iterations) or (i == 0):
                 costs.append((i, cost))
 
-            # Verbose printing
             if verbose and ((i % step == 0) or (i == iterations) or (i == 0)):
                 print(f"Cost after {i} iterations: {cost}")
 
-            # Skip gradient descent on last iteration
             if i < iterations:
                 self.gradient_descent(Y, alpha)
 
-        # Graphing
         if graph:
             x_vals = [x for x, c in costs]
             y_vals = [c for x, c in costs]
@@ -152,13 +152,9 @@ class DeepNeuralNetwork:
         return self.evaluate(X, Y)
 
     def save(self, filename):
-        """
-        Saves the instance object to a file in pickle format.
-        If filename doesn't end with '.pkl', it will be added.
-        """
+        """Saves the instance object to a file in pickle format"""
         if not filename.endswith('.pkl'):
             filename += '.pkl'
-
         try:
             with open(filename, 'wb') as f:
                 pickle.dump(self, f)
@@ -167,13 +163,9 @@ class DeepNeuralNetwork:
 
     @staticmethod
     def load(filename):
-        """
-        Loads a pickled DeepNeuralNetwork object.
-        Returns the object, or None if file doesn't exist or error occurs.
-        """
+        """Loads a pickled DeepNeuralNetwork object"""
         if not os.path.isfile(filename):
             return None
-
         try:
             with open(filename, 'rb') as f:
                 obj = pickle.load(f)
