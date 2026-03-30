@@ -3,7 +3,7 @@
 
 
 import numpy as np
-
+import pickle
 
 class DeepNeuralNetwork:
     """Defines a deep neural network performing binary classification"""
