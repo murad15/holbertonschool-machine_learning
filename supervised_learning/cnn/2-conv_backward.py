@@ -14,15 +14,15 @@ def conv_backward(dZ, A_prev, W, b, padding="same", stride=(1, 1)):
     sh, sw = stride
 
     if padding == "same":
-        ph = ((h_prev - 1) * sh + kh - h_prev) // 2
-        pw = ((w_prev - 1) * sw + kw - w_prev) // 2
-    else:  # valid
+        ph = int(((h_prev - 1) * sh + kh - h_prev) / 2)
+        pw = int(((w_prev - 1) * sw + kw - w_prev) / 2)
+    else:
         ph, pw = 0, 0
 
     A_prev_pad = np.pad(
         A_prev,
         ((0, 0), (ph, ph), (pw, pw), (0, 0)),
-        mode="constant"
+        mode='constant'
     )
 
     dA_prev_pad = np.zeros_like(A_prev_pad)
@@ -42,17 +42,13 @@ def conv_backward(dZ, A_prev, W, b, padding="same", stride=(1, 1)):
                     horiz_start = w * sw
                     horiz_end = horiz_start + kw
 
-                    a_slice = a_prev[
-                        vert_start:vert_end,
-                        horiz_start:horiz_end,
-                        :
-                    ]
+                    a_slice = a_prev[vert_start:vert_end,
+                                     horiz_start:horiz_end,
+                                     :]
 
-                    da_prev[
-                        vert_start:vert_end,
-                        horiz_start:horiz_end,
-                        :
-                    ] += W[:, :, :, c] * dZ[i, h, w, c]
+                    da_prev[vert_start:vert_end,
+                            horiz_start:horiz_end,
+                            :] += W[:, :, :, c] * dZ[i, h, w, c]
 
                     dW[:, :, :, c] += a_slice * dZ[i, h, w, c]
 
