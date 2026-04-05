@@ -26,4 +26,3 @@ def pool_forward(A_prev, kernel_shape, stride=(1, 1), mode='max'):
                 output[:, i, j, :] = np.mean(img_slice, axis=(1, 2))
 
     return output
-
