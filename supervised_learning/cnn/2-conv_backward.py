@@ -34,18 +34,18 @@ def conv_backward(dZ, A_prev, W, b, padding="same", stride=(1, 1)):
         for h in range(h_new):
             for w in range(w_new):
                 # Calculate corners
-                vert_start = h * sh
-                vert_end = vert_start + kh
-                horiz_start = w * sw
-                horiz_end = horiz_start + kw
+                vs = h * sh
+                ve = vert_start + kh
+                hs = w * sw
+                he = hs + kw
 
                 for c in range(c_new):
                     # Slicing the padded input
-                    a_slice = A_prev_pad[i, vert_start:vert_end, horiz_start:horiz_end, :]
+                    a_slice = A_prev_pad[i, vs:ve, hs:he, :]
 
                     # Update gradients
                     # The ValueError happens here if the slice is smaller than the filter
-                    dA_prev_pad[i, vert_start:vert_end, horiz_start:horiz_end, :] += W[:, :, :, c] * dZ[i, h, w, c]
+                    dA_prev_pad[i, vs:ve, hs:he, :] += W[:, :, :, c] * dZ[i, h, w, c]
                     dW[:, :, :, c] += a_slice * dZ[i, h, w, c]
 
     # 2. Fixed Cropping Logic
