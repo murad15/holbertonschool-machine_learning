@@ -26,7 +26,7 @@ def conv_backward(dZ, A_prev, W, b, padding="same", stride=(1, 1)):
         ((0, 0), (ph, ph), (pw, pw), (0, 0)),
         mode='constant'
     )
-    dA_prev_pad = np.zeros_like(A_prev_pad)
+    dA_pd = np.zeros_like(A_prev_pad)
     dW = np.zeros_like(W)
     db = np.sum(dZ, axis=(0, 1, 2), keepdims=True)
 
@@ -45,11 +45,11 @@ def conv_backward(dZ, A_prev, W, b, padding="same", stride=(1, 1)):
 
                     # Update gradients
                     # The ValueError happens here if slice smaller than filter
-                    dA_prev_pad[i, vs:ve, hs:he, :] += W[:, :, :, c] * dZ[i, h, w, c]
+                    dA_pd[i, vs:ve, hs:he, :] += W[:, :, :, c] * dZ[i, h, w, c]
                     dW[:, :, :, c] += a_slice * dZ[i, h, w, c]
 
     # 2. Fixed Cropping Logic
     # Slicing from ph to ph + h_prev handles ph=0 correctly
-    dA_prev = dA_prev_pad[:, ph:ph + h_prev, pw:pw + w_prev, :]
+    dA_prev = dA_pd[:, ph:ph + h_prev, pw:pw + w_prev, :]
 
     return dA_prev, dW, db
