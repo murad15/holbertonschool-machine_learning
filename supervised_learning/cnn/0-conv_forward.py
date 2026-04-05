@@ -32,7 +32,7 @@ def conv_forward(A_prev, W, b, activation, padding="same", stride=(1, 1)):
         for j in range(ow):
             img_slice = images_padded[:, i*sh:i*sh+kh, j*sw:j*sw+kw, :]
 
-            for k in range(nc):
+            for k in range(c_new):
                 kernel = W[:, :, :, k]
                 output[:, i, j, k] = np.sum(img_slice * kernel, axis=(1, 2, 3))
     Z = output + b
