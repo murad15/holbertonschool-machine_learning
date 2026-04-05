@@ -35,7 +35,7 @@ def conv_backward(dZ, A_prev, W, b, padding="same", stride=(1, 1)):
             for w in range(w_new):
                 # Calculate corners
                 vs = h * sh
-                ve = vert_start + kh
+                ve = vs + kh
                 hs = w * sw
                 he = hs + kw
 
@@ -44,7 +44,7 @@ def conv_backward(dZ, A_prev, W, b, padding="same", stride=(1, 1)):
                     a_slice = A_prev_pad[i, vs:ve, hs:he, :]
 
                     # Update gradients
-                    # The ValueError happens here if the slice is smaller than the filter
+                    # The ValueError happens here if slice smaller than filter
                     dA_prev_pad[i, vs:ve, hs:he, :] += W[:, :, :, c] * dZ[i, h, w, c]
                     dW[:, :, :, c] += a_slice * dZ[i, h, w, c]
 
