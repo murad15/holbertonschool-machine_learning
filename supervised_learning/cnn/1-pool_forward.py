@@ -12,7 +12,6 @@ def pool_forward(A_prev, kernel_shape, stride=(1, 1), mode='max'):
     kh, kw = kernel_shape
     sh, sw = stride
 
-    images
     oh = (h - kh) // sh + 1
     ow = (w - kw) // sw + 1
 
@@ -27,3 +26,4 @@ def pool_forward(A_prev, kernel_shape, stride=(1, 1), mode='max'):
                 output[:, i, j, :] = np.mean(img_slice, axis=(1, 2))
 
     return output
+
