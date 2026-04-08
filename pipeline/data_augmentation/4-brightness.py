@@ -8,5 +8,4 @@ import tensorflow as tf
 def change_brightness(image, max_delta):
     """This function does something interesting""""
 
-    bright = tf.image.random_brightness(image, max_delta)
-    return bright
+    return tf.image.random_brightness(image, max_delta)
