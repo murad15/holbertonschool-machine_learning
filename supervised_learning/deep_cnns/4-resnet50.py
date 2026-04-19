@@ -48,9 +48,10 @@ def resnet50():
     X = identity_block(X, [512, 512, 2048])
     X = identity_block(X, [512, 512, 2048])
 
-    # Pool + output
-    X = K.layers.AveragePooling2D((7, 7), padding='same')(X)
-    X = K.layers.Flatten()(X)
+    # Replace AveragePooling2D and Flatten with GlobalAveragePooling2D
+    X = K.layers.GlobalAveragePooling2D()(X)
+    
+    # Output layer
     outputs = K.layers.Dense(1000, activation='softmax',
                              kernel_initializer=initializer)(X)
 
