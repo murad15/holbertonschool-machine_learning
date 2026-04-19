@@ -7,7 +7,7 @@ from tensorflow import keras as K
 
 def identity_block(A_prev, filters):
     """Something that function does"""
-    
+
     F11, F3, F12 = filters
     initializer = K.initializers.he_normal(seed=0)
 
