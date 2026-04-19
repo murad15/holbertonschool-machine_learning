@@ -9,52 +9,48 @@ projection_block = __import__('3-projection_block').projection_block
 
 
 def resnet50():
-    """Something that function does"""
-
-    initializer = K.initializers.he_normal(seed=0)
-
-    inputs = K.Input(shape=(224, 224, 3))
-
-    # Initial layers
-    X = K.layers.Conv2D(64, (7, 7), strides=(2, 2),
-            padding='same',
-            kernel_initializer=initializer)(inputs)
-    X = K.layers.BatchNormalization(axis=-1)(X)
-    X = K.layers.ReLU()(X)
-    X = K.layers.MaxPooling2D((3, 3), strides=(2, 2),
-                             padding='same')(X)
-
-    # Stage 2
-    X = projection_block(X, [64, 64, 256], s=1)
-    X = identity_block(X, [64, 64, 256])
-    X = identity_block(X, [64, 64, 256])
-    
-    # Stage 3
-    X = projection_block(X, [128, 128, 512], s=2)
-    X = identity_block(X, [128, 128, 512])
-    X = identity_block(X, [128, 128, 512])
-    X = identity_block(X, [128, 128, 512])
-
-    # Stage 4
-    X = projection_block(X, [256, 256, 1024], s=2)
-    X = identity_block(X, [256, 256, 1024])
-    X = identity_block(X, [256, 256, 1024])
-    X = identity_block(X, [256, 256, 1024])
-    X = identity_block(X, [256, 256, 1024])
-    X = identity_block(X, [256, 256, 1024])
-
-    # Stage 5
-    X = projection_block(X, [512, 512, 2048], s=2)
-    X = identity_block(X, [512, 512, 2048])
-    X = identity_block(X, [512, 512, 2048])
-
-    # Replace AveragePooling2D and 
-    X = K.layers.GlobalAveragePooling2D()(X)
-    
-    # Output layer
-    outputs = K.layers.Dense(1000, activation='softmax',
-                kernel_initializer=initializer)(X)
-
-    model = K.Model(inputs=inputs, outputs=outputs)
-
-    return model
+    """Builds the ResNet-50 architecture.
+ 
+    Returns:
+        keras.Model: the ResNet-50 keras model
+    """
+    init = K.initializers.HeNormal(seed=0)
+    X = K.Input(shape=(224, 224, 3))
+ 
+    # Stage 1: conv1
+    Y = K.layers.Conv2D(64, 7, strides=2, padding='same',
+                        kernel_initializer=init)(X)
+    Y = K.layers.BatchNormalization(axis=3)(Y)
+    Y = K.layers.Activation('relu')(Y)
+    Y = K.layers.MaxPooling2D(pool_size=3, strides=2, padding='same')(Y)
+ 
+    # Stage 2: conv2_x — projection + 2 identity blocks, filters=[64,64,256]
+    Y = projection_block(Y, [64, 64, 256], s=1)
+    Y = identity_block(Y, [64, 64, 256])
+    Y = identity_block(Y, [64, 64, 256])
+ 
+    # Stage 3: conv3_x — projection + 3 identity blocks, filters=[128,128,512]
+    Y = projection_block(Y, [128, 128, 512], s=2)
+    Y = identity_block(Y, [128, 128, 512])
+    Y = identity_block(Y, [128, 128, 512])
+    Y = identity_block(Y, [128, 128, 512])
+ 
+    # Stage 4: conv4_x — projection + 5 identity blocks, filters=[256,256,1024]
+    Y = projection_block(Y, [256, 256, 1024], s=2)
+    Y = identity_block(Y, [256, 256, 1024])
+    Y = identity_block(Y, [256, 256, 1024])
+    Y = identity_block(Y, [256, 256, 1024])
+    Y = identity_block(Y, [256, 256, 1024])
+    Y = identity_block(Y, [256, 256, 1024])
+ 
+    # Stage 5: conv5_x — projection + 2 identity blocks, filters=[512,512,2048]
+    Y = projection_block(Y, [512, 512, 2048], s=2)
+    Y = identity_block(Y, [512, 512, 2048])
+    Y = identity_block(Y, [512, 512, 2048])
+ 
+    # Average pooling + fully connected
+    Y = K.layers.AveragePooling2D(pool_size=7, strides=1)(Y)
+    Y = K.layers.Dense(1000, activation='softmax',
+                       kernel_initializer=init)(Y)
+ 
+    return K.Model(inputs=X, outputs=Y)
