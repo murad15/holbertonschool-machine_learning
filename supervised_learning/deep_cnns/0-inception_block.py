@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 """Something that function does"""
 
 from tensorflow import keras as K
