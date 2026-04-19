@@ -32,6 +32,6 @@ def identity_block(A_prev, filters):
 
     # Add
     X = K.layers.Add()([X, shortcut])
-    X = K.layers.ReLU()
+    X = K.layers.ReLU()(X)
 
     return X
