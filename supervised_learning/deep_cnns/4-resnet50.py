@@ -21,7 +21,6 @@ def resnet50():
     Y = K.layers.BatchNormalization(axis=3)(Y)
     Y = K.layers.ReLU()(Y)
     Y = K.layers.MaxPooling2D(pool_size=3, strides=2, padding='same')(Y)
- 
     # Stage 2: conv2_x — projection + 2 identity blocks, filters=[64,64,256]
     Y = projection_block(Y, [64, 64, 256], s=1)
     Y = identity_block(Y, [64, 64, 256])
