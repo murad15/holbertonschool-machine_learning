@@ -10,7 +10,7 @@ projection_block = __import__('3-projection_block').projection_block
 
 def resnet50():
     """Something that function does"""
-    
+
     initializer = K.initializers.he_normal(seed=0)
 
     inputs = K.Input(shape=(224, 224, 3))
@@ -28,7 +28,7 @@ def resnet50():
     X = projection_block(X, [64, 64, 256], s=1)
     X = identity_block(X, [64, 64, 256])
     X = identity_block(X, [64, 64, 256])
-
+    
     # Stage 3
     X = projection_block(X, [128, 128, 512], s=2)
     X = identity_block(X, [128, 128, 512])
