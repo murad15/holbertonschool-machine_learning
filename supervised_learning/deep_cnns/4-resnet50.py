@@ -9,45 +9,33 @@ projection_block = __import__('3-projection_block').projection_block
 
 
 def resnet50():
-    """
-    Builds the ResNet-50 architecture.
-
-    Returns:
-    - Keras Model
-    """
-
+    """Something that function does"""
+    
     initializer = K.initializers.he_normal(seed=0)
 
-    # Input
     inputs = K.Input(shape=(224, 224, 3))
 
-    # Initial conv
-    X = K.layers.Conv2D(
-        64, (7, 7),
-        strides=(2, 2),
-        padding='same',
-        kernel_initializer=initializer
-    )(inputs)
+    # Initial layers
+    X = K.layers.Conv2D(64, (7, 7), strides=(2, 2),
+                        padding='same',
+                        kernel_initializer=initializer)(inputs)
     X = K.layers.BatchNormalization(axis=-1)(X)
-    X = K.layers.Activation('relu')(X)
-    X = K.layers.MaxPooling2D(
-        pool_size=(3, 3),
-        strides=(2, 2),
-        padding='same'
-    )(X)
+    X = K.layers.ReLU()(X)
+    X = K.layers.MaxPooling2D((3, 3), strides=(2, 2),
+                             padding='same')(X)
 
-    # ===== Stage 2 =====
+    # Stage 2
     X = projection_block(X, [64, 64, 256], s=1)
     X = identity_block(X, [64, 64, 256])
     X = identity_block(X, [64, 64, 256])
 
-    # ===== Stage 3 =====
+    # Stage 3
     X = projection_block(X, [128, 128, 512], s=2)
     X = identity_block(X, [128, 128, 512])
     X = identity_block(X, [128, 128, 512])
     X = identity_block(X, [128, 128, 512])
 
-    # ===== Stage 4 =====
+    # Stage 4
     X = projection_block(X, [256, 256, 1024], s=2)
     X = identity_block(X, [256, 256, 1024])
     X = identity_block(X, [256, 256, 1024])
@@ -55,26 +43,17 @@ def resnet50():
     X = identity_block(X, [256, 256, 1024])
     X = identity_block(X, [256, 256, 1024])
 
-    # ===== Stage 5 =====
+    # Stage 5
     X = projection_block(X, [512, 512, 2048], s=2)
     X = identity_block(X, [512, 512, 2048])
     X = identity_block(X, [512, 512, 2048])
 
-    # Average Pooling
-    X = K.layers.AveragePooling2D(
-        pool_size=(7, 7),
-        padding='same'
-    )(X)
-
-    # Output layer
+    # Pool + output
+    X = K.layers.AveragePooling2D((7, 7), padding='same')(X)
     X = K.layers.Flatten()(X)
-    outputs = K.layers.Dense(
-        1000,
-        activation='softmax',
-        kernel_initializer=initializer
-    )(X)
+    outputs = K.layers.Dense(1000, activation='softmax',
+                             kernel_initializer=initializer)(X)
 
-    # Model
     model = K.Model(inputs=inputs, outputs=outputs)
 
     return model
