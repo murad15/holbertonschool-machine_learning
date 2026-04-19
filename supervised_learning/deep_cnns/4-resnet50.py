@@ -14,11 +14,12 @@ def resnet50():
     initializer = K.initializers.he_normal(seed=0)
 
     inputs = K.Input(shape=(224, 224, 3))
+    inputs = s
 
     # Initial layers
     X = K.layers.Conv2D(64, (7, 7), strides=(2, 2),
                         padding='same',
-                        kernel_initializer=initializer)(inputs)
+                        kernel_initializer=initializer)(s)
     X = K.layers.BatchNormalization(axis=-1)(X)
     X = K.layers.ReLU()(X)
     X = K.layers.MaxPooling2D((3, 3), strides=(2, 2),
