@@ -7,12 +7,10 @@ from tensorflow import keras as K
 
 def projection_block(A_prev, filters, s=2):
     """Something that function does"""
-    
+
     F11, F3, F12 = filters
     initializer = K.initializers.he_normal(seed=0)
-
     shortcut = A_prev
-
     # 1x1 (stride s)
     X = K.layers.Conv2D(F11, (1, 1), strides=(s, s),
                         padding='same',
