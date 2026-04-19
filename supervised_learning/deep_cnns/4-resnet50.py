@@ -9,8 +9,6 @@ projection_block = __import__('3-projection_block').projection_block
 
 
 def resnet50():
-    """Something that function does"""
-    
     initializer = K.initializers.he_normal(seed=0)
 
     inputs = K.Input(shape=(224, 224, 3))
