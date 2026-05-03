@@ -87,14 +87,14 @@ class Yolo:
             anchor_w = anchor_w.reshape((1, 1, anchor_boxes))
             anchor_h = anchor_h.reshape((1, 1, anchor_boxes))
 
-            b_w = (anchor_w * np.exp(t_w)) / input_w
-            b_h = (anchor_h * np.exp(t_h)) / input_h
-
+            b_w = anchor_w * np.exp(t_w)
+            b_h = anchor_h * np.exp(t_h)
+            
             # Convert to corner coordinates
-            x1 = (b_x - b_w / 2) * image_w
-            y1 = (b_y - b_h / 2) * image_h
-            x2 = (b_x + b_w / 2) * image_w
-            y2 = (b_y + b_h / 2) * image_h
+            x1 = (b_x * image_w) - (b_w / 2)
+            y1 = (b_y * image_h) - (b_h / 2)
+            x2 = (b_x * image_w) + (b_w / 2)
+            y2 = (b_y * image_h) + (b_h / 2)
 
             box = np.stack([x1, y1, x2, y2], axis=-1)
 
