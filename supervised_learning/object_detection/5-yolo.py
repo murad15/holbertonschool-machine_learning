@@ -12,7 +12,7 @@ class Yolo:
     def __init__(self, model_path, classes_path, class_t, nms_t, anchors):
         """
         model_path: path to where a Darknet Keras model is stored
-        classes_path: path to where the list of class names used for the model is stored
+        classes_path: path to where the list of class names used
         class_t: box score threshold for initial filtering
         nms_t: IOU threshold for non-max suppression
         anchors: numpy.ndarray of shape (outputs, anchor_boxes, 2)
