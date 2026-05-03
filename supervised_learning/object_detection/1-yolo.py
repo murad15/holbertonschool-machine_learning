@@ -84,5 +84,5 @@ class Yolo:
             boxes.append(np.stack([x1, y1, x2, y2], axis=-1))
             box_confidences.append(1 / (1 + np.exp(-box_conf)))
             box_class_probs.append(1 / (1 + np.exp(-class_probs)))
-    
+
         return boxes, box_confidences, box_class_probs
