@@ -89,7 +89,7 @@ class Yolo:
 
             b_w = anchor_w * np.exp(t_w)
             b_h = anchor_h * np.exp(t_h)
-            
+
             # Convert to corner coordinates
             x1 = (b_x * image_w) - (b_w / 2)
             y1 = (b_y * image_h) - (b_h / 2)
