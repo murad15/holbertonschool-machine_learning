@@ -104,23 +104,43 @@ class Yolo:
             return boxes, box_confidences, box_class_probs
 
     def filter_boxes(self, boxes, box_confidences, box_class_probs):
+        """
+        Filters boxes based on objectness score and class probability
+
+        Parameters:
+        - boxes: list of numpy arrays (grid_h, grid_w, anchor_boxes, 4)
+        - box_confidences: list of numpy arrays (..., 1)
+        - box_class_probs: list of numpy arrays (..., classes)
+
+        Returns:
+        - filtered_boxes: numpy.ndarray (?, 4)
+        - box_classes: numpy.ndarray (?,)
+        - box_scores: numpy.ndarray (?)
+        """
+
         filtered_boxes = []
         box_classes = []
         box_scores = []
-   
-        for box, box_conf, box_class_prob in zip(boxes, box_confidences, box_class_probs):
-            scores = box_conf * box_class_prob
 
-            # Best class per box
-            box_class = np.argmax(scores, axis=-1)
-            box_score = np.max(scores, axis=-1)
+        for b, conf, prob in zip(boxes, box_confidences, box_class_probs):
+            # Compute box scores
+            scores = conf * prob  # shape: (..., classes)
 
-            # Filter by threshold
-            mask = box_score >= self.class_t
+            # Get best class score + class index per box
+            classes = np.argmax(scores, axis=-1)
+            class_scores = np.max(scores, axis=-1)
 
-            filtered_boxes.append(box[mask])
-            box_classes.append(box_class[mask])
-            box_scores.append(box_score[mask])
+            # Apply threshold
+            mask = class_scores >= self.class_t
+
+            # Filter
+            filtered_boxes.append(b[mask])
+            box_classes.append(classes[mask])
+            box_scores.append(class_scores[mask])
+
+        # Concatenate all outputs
+        if len(filtered_boxes) == 0:
+            return (np.array([]), np.array([]), np.array([]))
 
         filtered_boxes = np.concatenate(filtered_boxes, axis=0)
         box_classes = np.concatenate(box_classes, axis=0)
