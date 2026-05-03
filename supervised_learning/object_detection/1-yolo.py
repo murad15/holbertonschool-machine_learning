@@ -1,0 +1,78 @@
+#!/usr/bin/env python3
+"""YOLO v3 object detection class"""
+
+import numpy as np
+
+
+class Yolo:
+    # (constructor from previous task assumed here)
+
+    def process_outputs(self, outputs, image_size):
+        """
+        Processes Darknet outputs
+
+        Parameters:
+        - outputs: list of numpy arrays (model predictions)
+        - image_size: numpy.ndarray (image_height, image_width)
+
+        Returns:
+        - boxes: list of boundary boxes (x1, y1, x2, y2)
+        - box_confidences: list of box confidence scores
+        - box_class_probs: list of class probabilities
+        """
+
+        boxes = []
+        box_confidences = []
+        box_class_probs = []
+
+        input_h = self.model.input.shape[1]
+        input_w = self.model.input.shape[2]
+
+        image_h, image_w = image_size
+
+        for i, output in enumerate(outputs):
+            grid_h, grid_w, anchor_boxes, _ = output.shape
+
+            # Extract components
+            t_x = output[..., 0]
+            t_y = output[..., 1]
+            t_w = output[..., 2]
+            t_h = output[..., 3]
+
+            box_conf = output[..., 4:5]
+            class_probs = output[..., 5:]
+
+            # Create grid
+            c_x = np.arange(grid_w).reshape(1, grid_w, 1)
+            c_x = np.tile(c_x, (grid_h, 1, anchor_boxes))
+
+            c_y = np.arange(grid_h).reshape(grid_h, 1, 1)
+            c_y = np.tile(c_y, (1, grid_w, anchor_boxes))
+
+            # Sigmoid for center coordinates
+            b_x = (1 / (1 + np.exp(-t_x)) + c_x) / grid_w
+            b_y = (1 / (1 + np.exp(-t_y)) + c_y) / grid_h
+
+            # Exponential for width and height
+            anchor_w = self.anchors[i, :, 0]
+            anchor_h = self.anchors[i, :, 1]
+
+            anchor_w = anchor_w.reshape((1, 1, anchor_boxes))
+            anchor_h = anchor_h.reshape((1, 1, anchor_boxes))
+
+            b_w = (anchor_w * np.exp(t_w)) / input_w
+            b_h = (anchor_h * np.exp(t_h)) / input_h
+
+            # Convert to corner coordinates
+            x1 = (b_x - b_w / 2) * image_w
+            y1 = (b_y - b_h / 2) * image_h
+            x2 = (b_x + b_w / 2) * image_w
+            y2 = (b_y + b_h / 2) * image_h
+
+            box = np.stack([x1, y1, x2, y2], axis=-1)
+
+            boxes.append(box)
+            box_confidences.append(1 / (1 + np.exp(-box_conf)))
+            box_class_probs.append(1 / (1 + np.exp(-class_probs)))
+
+        return boxes, box_confidences, box_class_probs
