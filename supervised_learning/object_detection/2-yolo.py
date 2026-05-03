@@ -7,7 +7,7 @@ import numpy as np
 class Yolo:
     """YOLO v3 object detection class"""
 
-      def __init__(self, model_path, classes_path, class_t, nms_t, anchors):
+    def __init__(self, model_path, classes_path, class_t, nms_t, anchors):
         """
         Class constructor
 
