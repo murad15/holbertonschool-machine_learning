@@ -35,6 +35,8 @@ class Yolo:
         self.anchors = anchors
 
     def process_outputs(self, outputs, image_size):
+        """Uses the YOLO v3 algorithm to perform object detection"""
+
         boxes = []
         box_confidences = []
         box_class_probs = []
