@@ -101,6 +101,7 @@ class Yolo:
             boxes.append(box)
             box_confidences.append(1 / (1 + np.exp(-box_conf)))
             box_class_probs.append(1 / (1 + np.exp(-class_probs)))
+            return boxes, box_confidences, box_class_probs
 
     def filter_boxes(self, boxes, box_confidences, box_class_probs):
         """
