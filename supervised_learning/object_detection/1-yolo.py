@@ -2,6 +2,7 @@
 """YOLO v3 object detection class"""
 
 import numpy as np
+import tensorflow.keras as K
 
 
 class Yolo:
