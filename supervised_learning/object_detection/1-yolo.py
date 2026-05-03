@@ -38,47 +38,47 @@ class Yolo:
         boxes = []
         box_confidences = []
         box_class_probs = []
-    
+
         input_h = self.model.input.shape[1]
         input_w = self.model.input.shape[2]
-    
+
         image_h, image_w = image_size
-    
+
         for i, output in enumerate(outputs):
             grid_h, grid_w, anchor_boxes, _ = output.shape
-    
+
             t_x = output[..., 0]
             t_y = output[..., 1]
             t_w = output[..., 2]
             t_h = output[..., 3]
-    
+
             box_conf = output[..., 4:5]
             class_probs = output[..., 5:]
-    
+
             # Grid offsets
             c_x = np.arange(grid_w).reshape(1, grid_w, 1)
             c_x = np.tile(c_x, (grid_h, 1, anchor_boxes))
-    
+
             c_y = np.arange(grid_h).reshape(grid_h, 1, 1)
             c_y = np.tile(c_y, (1, grid_w, anchor_boxes))
-    
+
             # Normalized box center
             b_x = (1 / (1 + np.exp(-t_x)) + c_x) / grid_w
             b_y = (1 / (1 + np.exp(-t_y)) + c_y) / grid_h
-    
+
             # Normalize anchor dimensions by model input size
             anchor_w = self.anchors[i, :, 0].reshape(1, 1, anchor_boxes)
             anchor_h = self.anchors[i, :, 1].reshape(1, 1, anchor_boxes)
-    
+
             b_w = (anchor_w * np.exp(t_w)) / input_w  # ← fix
             b_h = (anchor_h * np.exp(t_h)) / input_h  # ← fix
-    
+
             # Convert normalized coords to image pixel coords
             x1 = (b_x - b_w / 2) * image_w
             y1 = (b_y - b_h / 2) * image_h
             x2 = (b_x + b_w / 2) * image_w
             y2 = (b_y + b_h / 2) * image_h
-    
+
             boxes.append(np.stack([x1, y1, x2, y2], axis=-1))
             box_confidences.append(1 / (1 + np.exp(-box_conf)))
             box_class_probs.append(1 / (1 + np.exp(-class_probs)))
