@@ -17,19 +17,19 @@ def pca(X, var=0.95):
 
     Returns:
     W : numpy.ndarray of shape (d, nd)
-        Weights matrix that maintains var fraction of X's original var
+        Weights matrix that maintains var fraction of X's original variance
     """
 
-    # SVD of X
-    _, S, Vt = np.linalg.svd(X, full_matrices=False)
+    # Singular Value Decomposition
+    _, S, Vt = np.linalg.svd(X)
 
-    # Cumulative explained variance ratio
-    cumsum = np.cumsum(S ** 2)
+    # Compute cumulative variance ratio
+    cumsum = np.cumsum(S)
 
-    # Minimum dimensions needed
+    # Find minimum number of dimensions
     nd = np.searchsorted(cumsum / cumsum[-1], var) + 1
 
-    # Weights matrix
-    W = Vt[:nd].T
+    # Principal components
+    W = Vt.T[:, :nd]
 
     return W
