@@ -25,13 +25,16 @@ def P_init(X, perplexity):
         Shannon entropy corresponding to perplexity
     """
 
-    n, d = X.shape
+    n = X.shape[0]
 
-    # Compute squared norms
-    sum_X = np.sum(np.square(X), axis=1)
+    # Squared norms
+    sum_X = np.sum(X ** 2, axis=1)
 
-    # Compute squared pairwise distance matrix
-    D = np.add(np.add(-2 * np.matmul(X, X.T), sum_X).T, sum_X)
+    # Squared pairwise distance matrix
+    D = sum_X[:, np.newaxis] + sum_X - 2 * np.matmul(X, X.T)
+
+    # Remove floating point negatives on diagonal
+    np.fill_diagonal(D, 0)
 
     # Initialize P matrix
     P = np.zeros((n, n))
