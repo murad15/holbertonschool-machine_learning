@@ -10,33 +10,26 @@ def pca(X, var=0.95):
 
     Parameters:
     X : numpy.ndarray of shape (n, d)
-        Dataset where:
-        - n is the number of data points
-        - d is the number of dimensions
-        - all dimensions have a mean of 0
+        Dataset where each column has a mean of 0
 
     var : float
-        Fraction of variance to preserve
+        Fraction of variance that the PCA transformation should maintain
 
     Returns:
     W : numpy.ndarray of shape (d, nd)
-        Weights matrix that preserves the required variance
+        Weights matrix that maintains var fraction of X's original var
     """
 
-    # Singular Value Decomposition
-    U, S, Vt = np.linalg.svd(X, full_matrices=False)
+    # SVD of X
+    _, S, Vt = np.linalg.svd(X, full_matrices=False)
 
-    # Compute explained variance ratio
-    explained_variance = (S ** 2)
-    explained_variance_ratio = explained_variance / np.sum(explained_variance)
+    # Cumulative explained variance ratio
+    cumsum = np.cumsum(S ** 2)
 
-    # Cumulative variance
-    cumulative_variance = np.cumsum(explained_variance_ratio)
+    # Minimum dimensions needed
+    nd = np.searchsorted(cumsum / cumsum[-1], var) + 1
 
-    # Find minimum number of dimensions to preserve `var`
-    nd = np.searchsorted(cumulative_variance, var) + 1
-
-    # Principal components
+    # Weights matrix
     W = Vt[:nd].T
 
     return W
