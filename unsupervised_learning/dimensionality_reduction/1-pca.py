@@ -19,13 +19,16 @@ def pca(X, ndim):
         Transformed version of X
     """
 
-    # Singular Value Decomposition
-    U, S, Vt = np.linalg.svd(X)
+    # Center the data
+    X = X - np.mean(X, axis=0)
+
+    # SVD
+    _, _, Vt = np.linalg.svd(X)
 
     # Projection matrix
     W = Vt.T[:, :ndim]
 
-    # Transform data
+    # Transform the data
     T = np.matmul(X, W)
 
     return T
