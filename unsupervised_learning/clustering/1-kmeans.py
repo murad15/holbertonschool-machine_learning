@@ -3,8 +3,6 @@
 
 import numpy as np
 
-initialize = __import__('0-initialize').initialize
-
 
 def kmeans(X, k, iterations=1000):
     """Performs K-means clustering on a dataset."""
@@ -21,9 +19,7 @@ def kmeans(X, k, iterations=1000):
     minimum = X.min(axis=0)
     maximum = X.max(axis=0)
 
-    C = initialize(X, k)
-    if C is None:
-        return None, None
+    C = np.random.uniform(minimum, maximum, size=(k, d))
 
     for _ in range(iterations):
         C_prev = C.copy()
