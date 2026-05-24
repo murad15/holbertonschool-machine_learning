@@ -5,7 +5,7 @@ import numpy as np
 
 
 def pdf(X, m, S):
-    """Calculates the probability density function of a Gaussian distribution."""
+    """Calculates the probability density function of a Gaussian d."""
     if not isinstance(X, np.ndarray) or X.ndim != 2:
         return None
 
