@@ -39,15 +39,12 @@ class BayesianOptimization:
         """
         mu, sigma = self.gp.predict(self.X_s)
 
-        # predict returns variance, so convert to standard deviation
-        sigma = np.sqrt(sigma)
-
         if self.minimize:
-            opt = np.min(self.gp.Y)
-            improvement = opt - mu - self.xsi
+            best = np.min(self.gp.Y)
+            improvement = best - mu - self.xsi
         else:
-            opt = np.max(self.gp.Y)
-            improvement = mu - opt - self.xsi
+            best = np.max(self.gp.Y)
+            improvement = mu - best - self.xsi
 
         EI = np.zeros_like(mu)
 
@@ -59,7 +56,6 @@ class BayesianOptimization:
             improvement[nonzero] * norm.cdf(Z[nonzero])
             + sigma[nonzero] * norm.pdf(Z[nonzero])
         )
-
         X_next = self.X_s[np.argmax(EI)]
 
         return X_next, EI
