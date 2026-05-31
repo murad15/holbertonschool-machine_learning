@@ -53,8 +53,8 @@ class BayesianOptimization:
         Z[nonzero] = improvement[nonzero] / sigma[nonzero]
 
         EI[nonzero] = (
-            improvement[nonzero] * norm.cdf(Z[nonzero])
-            + sigma[nonzero] * norm.pdf(Z[nonzero])
+            improvement[nonzero] * norm.cdf(Z[nonzero]) +
+            sigma[nonzero] * norm.pdf(Z[nonzero])
         )
 
         X_next = self.X_s[np.argmax(EI)]
