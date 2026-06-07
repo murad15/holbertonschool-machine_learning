@@ -10,9 +10,9 @@ def autoencoder(input_dims, hidden_layers, latent_dims):
     Creates a variational autoencoder.
 
     Args:
-        input_dims: integer, dimensions of the model input
-        hidden_layers: list containing the number of nodes for each hidden layer
-        latent_dims: integer, dimensions of the latent space
+        input_dims: integer, dimf the model input
+        hidden_lanumber of h hidden layer
+        latent_dims: integeof the latent space
 
     Returns:
         encoder, decoder, auto
