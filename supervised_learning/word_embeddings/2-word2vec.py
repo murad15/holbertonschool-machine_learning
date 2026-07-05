@@ -1,16 +1,31 @@
 #!/usr/bin/env python3
 """
-word 2 vec
+Word2Vec model
 """
 
-from gensim.models import Word2Vec
+import gensim
 
-def word2vec_model(sentences, vector_size=100, min_count=5, window=5, negative=5, 
-                   cbow=True, epochs=5, seed=0, workers=1):
+
+def word2vec_model(sentences, vector_size=100, min_count=5, window=5,
+                   negative=5, cbow=True, epochs=5, seed=0, workers=1):
     """
-    Creates a bag of words embedding matrix.
+    Creates, builds, and trains a gensim Word2Vec model.
+
+    Args:
+        sentences: list of sentences to train on
+        vector_size: dimensionality of the embedding layer
+        min_count: minimum number of occurrences of a word
+        window: maximum distance between current and predicted word
+        negative: size of negative sampling
+        cbow: True for CBOW, False for Skip-gram
+        epochs: number of training iterations
+        seed: random seed
+        workers: number of worker threads
+
+    Returns:
+        The trained Word2Vec model
     """
-    model = Word2Vec(
+    model = gensim.models.Word2Vec(
         vector_size=vector_size,
         min_count=min_count,
         window=window,
