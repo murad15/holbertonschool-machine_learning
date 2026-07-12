@@ -9,7 +9,7 @@ EncoderBlock = __import__('7-transformer_encoder_block').EncoderBlock
 
 
 class Encoder(tf.keras.layers.Layer):
-    """Represents the encoder of a transformer."""
+    """Creates the encoder for a Transformer."""
 
     def __init__(
         self,
@@ -22,7 +22,7 @@ class Encoder(tf.keras.layers.Layer):
         drop_rate=0.1
     ):
         """
-        Initialize the transformer encoder.
+        Initialize the Transformer encoder.
 
         Args:
             N: Number of encoder blocks.
@@ -30,7 +30,7 @@ class Encoder(tf.keras.layers.Layer):
             h: Number of attention heads.
             hidden: Number of units in the fully connected layer.
             input_vocab: Size of the input vocabulary.
-            max_seq_len: Maximum possible input sequence length.
+            max_seq_len: Maximum input sequence length.
             drop_rate: Dropout rate.
         """
         super().__init__()
@@ -39,8 +39,8 @@ class Encoder(tf.keras.layers.Layer):
         self.dm = dm
 
         self.embedding = tf.keras.layers.Embedding(
-            input_vocab,
-            dm
+            input_dim=input_vocab,
+            output_dim=dm
         )
 
         self.positional_encoding = positional_encoding(
@@ -61,20 +61,22 @@ class Encoder(tf.keras.layers.Layer):
 
         Args:
             x: Tensor of shape (batch, input_seq_len) containing
-                input vocabulary indices.
+                token indices.
             training: Boolean indicating whether the model is training.
-            mask: Mask to apply during multi-head attention.
+            mask: Mask applied during multi-head attention.
 
         Returns:
             Tensor of shape (batch, input_seq_len, dm).
         """
-        seq_len = tf.shape(x)[1]
+        input_seq_len = tf.shape(x)[1]
 
         x = self.embedding(x)
 
+        # Scale embeddings according to the Transformer architecture.
         x *= tf.math.sqrt(tf.cast(self.dm, tf.float32))
 
-        x += self.positional_encoding[:seq_len]
+        # Add positional information to each token embedding.
+        x += self.positional_encoding[:input_seq_len]
 
         x = self.dropout(x, training=training)
 
@@ -82,4 +84,3 @@ class Encoder(tf.keras.layers.Layer):
             x = block(x, training, mask)
 
         return x
-```
