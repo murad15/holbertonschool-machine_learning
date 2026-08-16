@@ -1,9 +1,14 @@
 #!/usr/bin/env python3
-"""Module for initializing a Q-table."""
+"""Module for selecting an action using epsilon-greedy."""
 
 import numpy as np
 
 
-def q_init(env):
-    """Initialize and return a Q-table filled with zeros."""
-    return np.zeros((env.observation_space.n, env.action_space.n))
+def epsilon_greedy(Q, state, epsilon):
+    """Select the next action using the epsilon-greedy strategy."""
+    p = np.random.uniform()
+
+    if p < epsilon:
+        return np.random.randint(Q.shape[1])
+
+    return np.argmax(Q[state])
