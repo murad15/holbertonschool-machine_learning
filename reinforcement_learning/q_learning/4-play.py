@@ -1,15 +1,22 @@
 #!/usr/bin/env python3
-"""Module for loading a FrozenLake environment."""
+"""Module for playing FrozenLake using a trained Q-table."""
 
-import gymnasium as gym
+import numpy as np
 
 
-def load_frozen_lake(desc=None, map_name=None, is_slippery=False):
-    """Load and return an unwrapped FrozenLake environment."""
-    return gym.make(
-        "FrozenLake-v1",
-        desc=desc,
-        map_name=map_name,
-        is_slippery=is_slippery,
-        render_mode="ansi"
-    ).unwrapped
+def play(env, Q, max_steps=100):
+    """Play one episode by always exploiting the Q-table."""
+    state = env.reset()[0]
+    total_rewards = 0
+    rendered_outputs = [env.render()]
+
+    for _ in range(max_steps):
+        action = np.argmax(Q[state])
+        state, reward, terminated, truncated, _ = env.step(action)
+        total_rewards += reward
+        rendered_outputs.append(env.render())
+
+        if terminated or truncated:
+            break
+
+    return total_rewards, rendered_outputs
