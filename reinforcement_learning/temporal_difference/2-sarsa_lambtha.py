@@ -1,87 +1,72 @@
 #!/usr/bin/env python3
 """
-Defines the SARSA(lambda) reinforcement learning algorithm.
+Module containing the SARSA(lambda) reinforcement learning algorithm.
 """
 import numpy as np
 
 
-def epsilon_greedy(Q, state, epsilon):
-    """
-    Select an action using the epsilon-greedy strategy.
-
-    Args:
-        Q (numpy.ndarray): The Q table.
-        state (int): The current state.
-        epsilon (float): Exploration threshold.
-
-    Returns:
-        int: The selected action.
-    """
-    if np.random.uniform(0, 1) < epsilon:
-        return np.random.randint(Q.shape[1])
-
-    return np.argmax(Q[state])
-
-
 def sarsa_lambtha(env, Q, lambtha, episodes=5000, max_steps=100,
-                  alpha=0.1, gamma=0.99, epsilon=1,
-                  min_epsilon=0.1, epsilon_decay=0.05):
+                  alpha=0.1, gamma=0.99, epsilon=1, min_epsilon=0.1,
+                  epsilon_decay=0.05):
     """
-    Perform the SARSA(lambda) algorithm.
+    Performs SARSA(lambda) algorithm.
 
-    Args:
-        env: The environment instance.
-        Q (numpy.ndarray): The Q table.
-        lambtha (float): Eligibility trace factor.
-        episodes (int): Number of training episodes.
-        max_steps (int): Maximum steps per episode.
-        alpha (float): Learning rate.
-        gamma (float): Discount rate.
-        epsilon (float): Initial exploration threshold.
-        min_epsilon (float): Minimum exploration threshold.
-        epsilon_decay (float): Epsilon decay rate.
+    Parameters:
+    - env: the gymnasium environment instance
+    - Q: a numpy.ndarray of shape (s,a) containing the Q table
+    - lambtha: the eligibility trace factor
+    - episodes: the total number of episodes to train over
+    - max_steps: the maximum number of steps per episode
+    - alpha: the learning rate
+    - gamma: the discount rate
+    - epsilon: the initial threshold for epsilon greedy
+    - min_epsilon: the minimum value that epsilon should decay to
+    - epsilon_decay: the decay rate for updating epsilon between episodes
 
     Returns:
-        numpy.ndarray: The updated Q table.
+    - Q: the updated Q table
     """
-    initial_epsilon = epsilon
-    eligibility = np.zeros_like(Q)
+    init_epsilon = epsilon
 
-    for episode in range(episodes):
+    for ep in range(episodes):
+        # Update epsilon for the current episode using exponential decay
+        epsilon = min_epsilon + (init_epsilon - min_epsilon) * \
+            np.exp(-epsilon_decay * ep)
+
         state, _ = env.reset()
-        action = epsilon_greedy(Q, state, epsilon)
+        E = np.zeros_like(Q)
+
+        # Choose the initial action using an epsilon-greedy policy
+        if np.random.uniform(0, 1) < epsilon:
+            action = np.random.randint(Q.shape[1])
+        else:
+            action = np.argmax(Q[state, :])
 
         for _ in range(max_steps):
-            eligibility *= lambtha * gamma
-            eligibility[state, action] += 1
+            next_state, reward, terminated, truncated, _ = env.step(action)
 
-            next_state, reward, terminated, truncated, _ = env.step(
-                action
-            )
+            # Choose the next action using an epsilon-greedy policy
+            if np.random.uniform(0, 1) < epsilon:
+                next_action = np.random.randint(Q.shape[1])
+            else:
+                next_action = np.argmax(Q[next_state, :])
 
-            next_action = epsilon_greedy(
-                Q, next_state, epsilon
-            )
+            # Calculate the Temporal Difference (TD) error
+            delta = reward + gamma * Q[next_state, next_action] - Q[state, action]
 
-            delta = (
-                reward
-                + gamma * Q[next_state, next_action]
-                - Q[state, action]
-            )
+            # Increment the eligibility trace for the visited state-action pair
+            E[state, action] += 1.0
 
-            Q[state, action] += (
-                alpha * delta * eligibility[state, action]
-            )
+            # Update the Q-table and eligibility traces
+            Q += alpha * delta * E
+            E *= gamma * lambtha
 
+            # Check if the episode is done
             if terminated or truncated:
                 break
 
+            # Move to the next step
             state = next_state
             action = next_action
-
-        epsilon = min_epsilon + (
-            (initial_epsilon - min_epsilon)
-            * np.exp(-epsilon_decay * episode)
-        )
 
     return Q
