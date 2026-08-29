@@ -45,25 +45,23 @@ def sarsa_lambtha(env, Q, lambtha, episodes=5000, max_steps=100,
         numpy.ndarray: The updated Q table.
     """
     initial_epsilon = epsilon
+    eligibility = np.zeros_like(Q)
 
     for episode in range(episodes):
         state, _ = env.reset()
-        eligibility = np.zeros_like(Q)
         action = epsilon_greedy(Q, state, epsilon)
 
         for _ in range(max_steps):
+            eligibility *= lambtha * gamma
+            eligibility[state, action] += 1
+
             next_state, reward, terminated, truncated, _ = env.step(
                 action
             )
 
-            eligibility[state, action] += 1
-
-            if terminated or truncated:
-                delta = reward - Q[state, action]
-                Q += alpha * delta * eligibility
-                break
-
-            next_action = epsilon_greedy(Q, next_state, epsilon)
+            next_action = epsilon_greedy(
+                Q, next_state, epsilon
+            )
 
             delta = (
                 reward
@@ -71,8 +69,12 @@ def sarsa_lambtha(env, Q, lambtha, episodes=5000, max_steps=100,
                 - Q[state, action]
             )
 
-            Q += alpha * delta * eligibility
-            eligibility *= gamma * lambtha
+            Q[state, action] += (
+                alpha * delta * eligibility[state, action]
+            )
+
+            if terminated or truncated:
+                break
 
             state = next_state
             action = next_action
