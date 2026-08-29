@@ -8,38 +8,45 @@ import numpy as np
 def monte_carlo(env, V, policy, episodes=5000, max_steps=100,
                 alpha=0.1, gamma=0.99):
     """
-    Performs the Monte Carlo algorithm to estimate a value function.
+    Perform the Monte Carlo algorithm to estimate a value function.
 
     Args:
-        env: the environment instance.
-        V (numpy.ndarray): array of shape (s,) containing the value
-            estimate for each of the s states in the environment.
-        policy (callable): function that takes in a state and returns
-            the next action to take.
-        episodes (int): total number of episodes to train over.
-        max_steps (int): maximum number of steps per episode.
-        alpha (float): learning rate.
-        gamma (float): discount rate.
+        env: The environment instance.
+        V (numpy.ndarray): Value estimate for every state.
+        policy (callable): Returns an action for a given state.
+        episodes (int): Number of episodes.
+        max_steps (int): Maximum steps per episode.
+        alpha (float): Learning rate.
+        gamma (float): Discount rate.
 
     Returns:
-        numpy.ndarray: V, the updated value estimate.
+        numpy.ndarray: The updated value estimate.
     """
-    for ep in range(episodes):
+    for _ in range(episodes):
         state, _ = env.reset()
         episode = []
 
-        for step in range(max_steps):
+        for _ in range(max_steps):
             action = policy(state)
             next_state, reward, terminated, truncated, _ = env.step(
-                action)
+                action
+            )
+
             episode.append((state, reward))
-            if terminated or truncated:
-                break
             state = next_state
 
+            if terminated or truncated:
+                break
+
+        returns = np.zeros(len(episode))
         G = 0
-        for state, reward in reversed(episode):
-            G = gamma * G + reward
-            V[state] += alpha * (G - V[state])
+
+        for i in range(len(episode) - 1, -1, -1):
+            G = episode[i][1] + gamma * G
+            returns[i] = G
+
+        for i in range(len(episode)):
+            state = episode[i][0]
+            V[state] += alpha * (returns[i] - V[state])
 
     return V
